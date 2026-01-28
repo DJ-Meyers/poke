@@ -1,6 +1,10 @@
 import { queryOptions, useMutation, useQuery } from '@tanstack/react-query';
 import type { Game } from '~/utils/dex-data';
-import { getSelectedGames, toggleGameSelection } from '~/utils/selected-games';
+import {
+  getSelectedGames,
+  setSelectedGames,
+  toggleGameSelection,
+} from '~/utils/selected-games';
 import { queryClient } from './query-client';
 
 // --- Query option factories (internal) ---
@@ -25,6 +29,18 @@ export function useToggleGameSelection() {
   return useMutation({
     mutationFn: ({ game }: { game: Game }) => {
       toggleGameSelection({ game });
+      return Promise.resolve();
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['selected-games'] });
+    },
+  });
+}
+
+export function useSetSelectedGames() {
+  return useMutation({
+    mutationFn: ({ games }: { games: Game[] }) => {
+      setSelectedGames({ games });
       return Promise.resolve();
     },
     onSuccess: () => {

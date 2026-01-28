@@ -54,7 +54,7 @@ export function PageLayout({
       </header>
 
       {/* Spacer to match dex tabs height for consistent header size */}
-      <nav className="bg-surface shrink-0">
+      <nav className="bg-surface shrink-0 shadow-md shadow-black/20">
         <div className="max-w-md mx-auto flex">
           <div className="flex-1 px-4 py-3 text-center text-sm font-medium border-b-2 border-transparent">
             &nbsp;

@@ -89,6 +89,7 @@ interface GamesModifyViewProps {
   games: GameInfo[];
   selectedGames: Set<Game>;
   onToggleGame: (game: Game) => void;
+  onToggleAll: () => void;
   onContextMenu: (game: Game) => void;
 }
 
@@ -96,12 +97,30 @@ export function GamesModifyView({
   games,
   selectedGames,
   onToggleGame,
+  onToggleAll,
   onContextMenu,
 }: GamesModifyViewProps) {
   const reversedGames = [...games].reverse();
+  const allSelected = selectedGames.size === games.length;
 
   return (
-    <AppLayout title="Manage Games" backTo="/dex">
+    <AppLayout
+      title="Manage Games"
+      backTo="/dex"
+      subheader={
+        <button
+          type="button"
+          onClick={onToggleAll}
+          className={`flex-1 px-4 py-3 text-center text-sm font-medium transition-colors border-b-2 cursor-pointer ${
+            allSelected
+              ? 'text-primary border-primary bg-surface-hover'
+              : 'text-text-muted border-transparent hover:text-text hover:bg-surface-hover'
+          }`}
+        >
+          {allSelected ? 'Deselect All' : 'Select All'}
+        </button>
+      }
+    >
       <div className="p-4 space-y-3">
         {reversedGames.map((gameInfo) => (
           <GameCard
