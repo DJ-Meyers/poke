@@ -1,5 +1,6 @@
 import { createBrowserRouter, redirect } from 'react-router';
 import { RootLayout } from './layouts/RootLayout';
+import { rootLayoutLoader } from './layouts/loader';
 import { GamesPage } from './pages/games';
 import { GamesModifyPage } from './pages/games/modify';
 import { GamesModifyGamePage } from './pages/games/modify/[gameId]';
@@ -24,6 +25,7 @@ export const router = createBrowserRouter(
     {
       path: '/',
       element: <RootLayout />,
+      loader: rootLayoutLoader,
       children: [
         {
           index: true,
