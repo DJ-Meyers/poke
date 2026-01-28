@@ -33,7 +33,7 @@ export function DexContainer({ game, currentDex }: DexContainerProps) {
     toggleCaught.mutate({ gameDex: currentDex, pokemonId });
   };
 
-  const handleContextMenu = (pokemonId: number) => {
+  const handleViewPokemon = (pokemonId: number) => {
     const dexUrlId = getDexUrlId({ gameDex: currentDex });
     navigate(`/dex/${game.toLowerCase()}/${dexUrlId}/${pokemonId}`);
   };
@@ -49,8 +49,8 @@ export function DexContainer({ game, currentDex }: DexContainerProps) {
       <DexGridView
         pokemonIds={dexInfo.pokemonIds}
         caughtIds={caughtIdsSet}
-        onToggleCaught={handleToggleCaught}
-        onContextMenu={handleContextMenu}
+        onPrimaryAction={handleToggleCaught}
+        onSecondaryAction={handleViewPokemon}
       />
     </DexView>
   );

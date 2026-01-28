@@ -17,8 +17,8 @@ interface NationalDexViewProps {
   caughtIds: Set<number>;
   selectedGames: Set<Game>;
   onToggleGame: (game: Game) => void;
-  onToggleCaught: (pokemonId: number) => void;
-  onContextMenu: (pokemonId: number) => void;
+  onPrimaryAction: (pokemonId: number) => void;
+  onSecondaryAction: (pokemonId: number) => void;
   getOriginMarks: (pokemonId: number) => OriginMark[];
 }
 
@@ -27,8 +27,8 @@ export function NationalDexView({
   caughtIds,
   selectedGames,
   onToggleGame,
-  onToggleCaught,
-  onContextMenu,
+  onPrimaryAction,
+  onSecondaryAction,
   getOriginMarks,
 }: NationalDexViewProps) {
   return (
@@ -54,8 +54,8 @@ export function NationalDexView({
       <DexGridView
         pokemonIds={pokemonIds}
         caughtIds={caughtIds}
-        onToggleCaught={onToggleCaught}
-        onContextMenu={onContextMenu}
+        onPrimaryAction={onPrimaryAction}
+        onSecondaryAction={onSecondaryAction}
         getOriginMarks={getOriginMarks}
       />
     </AppLayout>

@@ -34,7 +34,7 @@ export function DexGridContainer({ gameDex }: DexGridContainerProps) {
     <DexGridView
       pokemonIds={dexInfo.pokemonIds}
       caughtIds={caughtIds}
-      onToggleCaught={handleToggleCaught}
+      onPrimaryAction={handleToggleCaught}
     />
   );
 }

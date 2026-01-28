@@ -25,7 +25,7 @@ export function GamesModifyContainer() {
     setGames.mutate({ games: allSelected ? [] : allGames });
   };
 
-  const handleContextMenu = (game: Game) => {
+  const handleViewGame = (game: Game) => {
     navigate(`/dex/games/${game.toLowerCase()}`);
   };
 
@@ -33,9 +33,9 @@ export function GamesModifyContainer() {
     <GamesModifyView
       games={games}
       selectedGames={selectedGamesSet}
-      onToggleGame={handleToggleGame}
+      onPrimaryAction={handleToggleGame}
       onToggleAll={handleToggleAll}
-      onContextMenu={handleContextMenu}
+      onSecondaryAction={handleViewGame}
     />
   );
 }

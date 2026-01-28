@@ -29,6 +29,18 @@ html {
   background-color: var(--color-bg);
 }
 
+/* Prevent iOS Safari long-press callouts on interactive tiles */
+.long-press-target {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+.long-press-target img {
+  -webkit-touch-callout: none;
+  pointer-events: none;
+}
+
 /* Pokemon Type Colors */
 :root {
   --color-type-normal: #a8a77a;
