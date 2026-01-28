@@ -11,7 +11,7 @@ export function GamesContainer() {
 
   const activeGames = games.filter((g) => selectedSet.has(g.game));
 
-  const handleGameContextMenu = (game: string) => {
+  const handleManageGame = (game: string) => {
     navigate(`/dex/manage/${game.toLowerCase()}`);
   };
 
@@ -19,7 +19,7 @@ export function GamesContainer() {
     <GamesView
       games={activeGames}
       nationalDexProgress={nationalDexProgress}
-      onGameContextMenu={handleGameContextMenu}
+      onGameSecondaryAction={handleManageGame}
     />
   );
 }

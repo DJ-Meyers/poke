@@ -79,7 +79,7 @@ export function NationalDexContainer() {
     [toggleHome]
   );
 
-  const handleContextMenu = useCallback(
+  const handleViewPokemon = useCallback(
     (pokemonId: number) => {
       navigate(`/dex/national/${pokemonId}`);
     },
@@ -92,8 +92,8 @@ export function NationalDexContainer() {
       caughtIds={filteredCaughtIds}
       selectedGames={selectedGames}
       onToggleGame={handleToggleGame}
-      onToggleCaught={handleToggleCaught}
-      onContextMenu={handleContextMenu}
+      onPrimaryAction={handleToggleCaught}
+      onSecondaryAction={handleViewPokemon}
       getOriginMarks={getOriginMarks}
     />
   );

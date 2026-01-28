@@ -1,11 +1,12 @@
 import type { Pokemon } from 'pokenode-ts';
 import { ORIGIN_MARK_IMAGES, type OriginMark } from './origin-marks';
+import { useSecondaryActionHandlers } from '~/hooks/use-secondary-action';
 
 interface DexEntryViewProps {
   pokemon: Pokemon;
   isComplete: boolean;
-  onClick?: (id: number) => void;
-  onContextMenu?: (id: number) => void;
+  onPrimaryAction?: (id: number) => void;
+  onSecondaryAction?: (id: number) => void;
   /** 1-indexed regional dex number. If undefined, only national number is shown. */
   regionalDexNumber?: number;
   /** Origin marks showing which games this Pokémon appears in. */
@@ -81,29 +82,31 @@ function formatDexNumber(
 export function DexEntryView({
   pokemon,
   isComplete,
-  onClick,
-  onContextMenu,
+  onPrimaryAction,
+  onSecondaryAction,
   regionalDexNumber,
   originMarks,
 }: DexEntryViewProps) {
   const types = getTypeNames(pokemon);
   const spriteUrl = getSpriteUrl(pokemon);
 
-  const handleClick = onClick ? () => onClick(pokemon.id) : undefined;
+  const handlePrimaryAction = onPrimaryAction
+    ? () => onPrimaryAction(pokemon.id)
+    : undefined;
 
-  const handleContextMenu = (e: React.MouseEvent) => {
-    if (onContextMenu) {
-      e.preventDefault();
-      onContextMenu(pokemon.id);
-    }
-  };
+  const secondaryCallback = onSecondaryAction
+    ? () => onSecondaryAction(pokemon.id)
+    : undefined;
+  const { onMobilePressAndHold, onRightClick } =
+    useSecondaryActionHandlers(secondaryCallback);
 
   return (
     <button
       type="button"
-      onClick={handleClick}
-      onContextMenu={handleContextMenu}
-      className="relative flex flex-col items-center justify-center aspect-square cursor-pointer w-full"
+      onClick={handlePrimaryAction}
+      className="relative flex flex-col items-center justify-center aspect-square cursor-pointer w-full long-press-target"
+      {...onMobilePressAndHold}
+      {...onRightClick}
     >
       {/* Type background - gray when incomplete, type color when complete */}
       <div

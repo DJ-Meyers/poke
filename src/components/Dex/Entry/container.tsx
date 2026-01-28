@@ -5,8 +5,8 @@ import { DexEntryView } from './view';
 interface DexEntryContainerProps {
   pokemonId: number;
   isComplete: boolean;
-  onClick?: (id: number) => void;
-  onContextMenu?: (id: number) => void;
+  onPrimaryAction?: (id: number) => void;
+  onSecondaryAction?: (id: number) => void;
   /** 1-indexed regional dex number. If undefined, only national number is shown. */
   regionalDexNumber?: number;
   /** Origin marks showing which games this Pokémon appears in. */
@@ -20,8 +20,8 @@ interface DexEntryContainerProps {
 export function DexEntryContainer({
   pokemonId,
   isComplete,
-  onClick,
-  onContextMenu,
+  onPrimaryAction,
+  onSecondaryAction,
   regionalDexNumber,
   originMarks,
 }: DexEntryContainerProps) {
@@ -31,8 +31,8 @@ export function DexEntryContainer({
     <DexEntryView
       pokemon={pokemon}
       isComplete={isComplete}
-      onClick={onClick}
-      onContextMenu={onContextMenu}
+      onPrimaryAction={onPrimaryAction}
+      onSecondaryAction={onSecondaryAction}
       regionalDexNumber={regionalDexNumber}
       originMarks={originMarks}
     />

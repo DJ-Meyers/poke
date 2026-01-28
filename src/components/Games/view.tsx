@@ -1,5 +1,6 @@
-import { Link, Outlet } from 'react-router';
+import { Link, Outlet, useNavigate } from 'react-router';
 import type { GameProgressInfo } from '~/data/dex-progress';
+import { useSecondaryActionHandlers } from '~/hooks/use-secondary-action';
 
 interface NationalDexProgressInfo {
   caughtCount: number;
@@ -26,22 +27,30 @@ const GAME_COVERS: Record<string, string> = {
 
 interface GameCardProps {
   game: GameProgressInfo;
-  onContextMenu: () => void;
+  onSecondaryAction: () => void;
 }
 
-function GameCard({ game, onContextMenu }: GameCardProps) {
+function GameCard({ game, onSecondaryAction }: GameCardProps) {
   const coverImage = GAME_COVERS[game.game];
+  const navigate = useNavigate();
+  const { onMobilePressAndHold, onRightClick } =
+    useSecondaryActionHandlers(onSecondaryAction);
 
-  const handleContextMenu = (e: React.MouseEvent) => {
-    e.preventDefault();
-    onContextMenu();
+  const handlePrimaryAction = () => {
+    navigate(`/dex/${game.game.toLowerCase()}`);
   };
 
   return (
-    <Link
-      to={`/dex/${game.game.toLowerCase()}`}
-      className="block h-full"
-      onContextMenu={handleContextMenu}
+    <div
+      role="link"
+      tabIndex={0}
+      onClick={handlePrimaryAction}
+      onKeyDown={(e) => {
+        if (e.key === 'Enter') handlePrimaryAction();
+      }}
+      className="block h-full cursor-pointer long-press-target"
+      {...onMobilePressAndHold}
+      {...onRightClick}
     >
       <div className="relative bg-surface hover:bg-surface-hover rounded-xl overflow-hidden transition-colors h-full flex flex-col">
         {/* Game cover image - bleeds to edges */}
@@ -72,20 +81,20 @@ function GameCard({ game, onContextMenu }: GameCardProps) {
           <ProgressBar value={game.caughtCount} max={game.totalCount} />
         </div>
       </div>
-    </Link>
+    </div>
   );
 }
 
 interface GamesViewProps {
   games: GameProgressInfo[];
   nationalDexProgress: NationalDexProgressInfo;
-  onGameContextMenu: (game: string) => void;
+  onGameSecondaryAction: (game: string) => void;
 }
 
 export function GamesView({
   games,
   nationalDexProgress,
-  onGameContextMenu,
+  onGameSecondaryAction,
 }: GamesViewProps) {
   const subheader = (
     <Link
@@ -112,7 +121,7 @@ export function GamesView({
             <GameCard
               key={game.game}
               game={game}
-              onContextMenu={() => onGameContextMenu(game.game)}
+              onSecondaryAction={() => onGameSecondaryAction(game.game)}
             />
           ))}
         </div>

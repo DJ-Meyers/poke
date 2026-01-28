@@ -16,8 +16,8 @@ import { useDexFilter } from './use-dex-filter';
 interface DexGridViewProps {
   pokemonIds: number[];
   caughtIds: Set<number>;
-  onToggleCaught?: (pokemonId: number) => void;
-  onContextMenu?: (pokemonId: number) => void;
+  onPrimaryAction?: (pokemonId: number) => void;
+  onSecondaryAction?: (pokemonId: number) => void;
   getOriginMarks?: (pokemonId: number) => OriginMark[];
 }
 
@@ -85,8 +85,8 @@ GridItem.displayName = 'GridItem';
 export function DexGridView({
   pokemonIds,
   caughtIds,
-  onToggleCaught,
-  onContextMenu,
+  onPrimaryAction,
+  onSecondaryAction,
   getOriginMarks,
 }: DexGridViewProps) {
   const [scrollParent, setScrollParent] = useState<HTMLElement | null>(null);
@@ -137,8 +137,8 @@ export function DexGridView({
                       <DexEntry
                         pokemonId={pokemonId}
                         isComplete={caughtIds.has(pokemonId)}
-                        onClick={onToggleCaught}
-                        onContextMenu={onContextMenu}
+                        onPrimaryAction={onPrimaryAction}
+                        onSecondaryAction={onSecondaryAction}
                         regionalDexNumber={regionalDexNumber}
                         originMarks={getOriginMarks?.(pokemonId)}
                       />

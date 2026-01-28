@@ -1,6 +1,7 @@
 import { Outlet } from 'react-router';
 import type { Game, GameInfo } from '~/utils/dex-data';
 import { AppLayout } from '~/components/ui';
+import { useSecondaryActionHandlers } from '~/hooks/use-secondary-action';
 
 // Game cover images
 import lgpeCover from '~/assets/game-covers/LGPE.avif';
@@ -22,33 +23,31 @@ const GAME_COVERS: Record<string, string> = {
 interface GameCardProps {
   game: GameInfo;
   isSelected: boolean;
-  onToggle: () => void;
-  onContextMenu: () => void;
+  onPrimaryAction: () => void;
+  onSecondaryAction: () => void;
 }
 
 function GameCard({
   game,
   isSelected,
-  onToggle,
-  onContextMenu,
+  onPrimaryAction,
+  onSecondaryAction,
 }: GameCardProps) {
   const coverImage = GAME_COVERS[game.game];
-
-  const handleContextMenu = (e: React.MouseEvent) => {
-    e.preventDefault();
-    onContextMenu();
-  };
+  const { onMobilePressAndHold, onRightClick } =
+    useSecondaryActionHandlers(onSecondaryAction);
 
   return (
     <button
       type="button"
-      onClick={onToggle}
-      onContextMenu={handleContextMenu}
-      className={`w-full flex items-center gap-4 rounded-xl overflow-hidden transition-all cursor-pointer ${
+      onClick={onPrimaryAction}
+      className={`w-full flex items-center gap-4 rounded-xl overflow-hidden transition-all cursor-pointer long-press-target ${
         isSelected
           ? 'bg-surface hover:bg-surface-hover'
           : 'bg-surface/40 opacity-50 hover:opacity-70'
       }`}
+      {...onMobilePressAndHold}
+      {...onRightClick}
     >
       <img
         src={coverImage}
@@ -88,17 +87,17 @@ function GameCard({
 interface GamesModifyViewProps {
   games: GameInfo[];
   selectedGames: Set<Game>;
-  onToggleGame: (game: Game) => void;
+  onPrimaryAction: (game: Game) => void;
   onToggleAll: () => void;
-  onContextMenu: (game: Game) => void;
+  onSecondaryAction: (game: Game) => void;
 }
 
 export function GamesModifyView({
   games,
   selectedGames,
-  onToggleGame,
+  onPrimaryAction,
   onToggleAll,
-  onContextMenu,
+  onSecondaryAction,
 }: GamesModifyViewProps) {
   const reversedGames = [...games].reverse();
   const allSelected = selectedGames.size === games.length;
@@ -127,8 +126,8 @@ export function GamesModifyView({
             key={gameInfo.game}
             game={gameInfo}
             isSelected={selectedGames.has(gameInfo.game)}
-            onToggle={() => onToggleGame(gameInfo.game)}
-            onContextMenu={() => onContextMenu(gameInfo.game)}
+            onPrimaryAction={() => onPrimaryAction(gameInfo.game)}
+            onSecondaryAction={() => onSecondaryAction(gameInfo.game)}
           />
         ))}
       </div>
