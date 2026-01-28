@@ -1,7 +1,8 @@
 import { useNavigate } from 'react-router';
-import { getAllGamesInfo, type Game } from '~/utils/dex-data';
+import { getAllGames, getAllGamesInfo, type Game } from '~/utils/dex-data';
 import {
   useSelectedGames,
+  useSetSelectedGames,
   useToggleGameSelection,
 } from '~/data/selected-games';
 import { GamesModifyView } from './view';
@@ -11,10 +12,17 @@ export function GamesModifyContainer() {
   const { selectedGames } = useSelectedGames();
   const selectedGamesSet = new Set(selectedGames);
   const toggleGame = useToggleGameSelection();
+  const setGames = useSetSelectedGames();
   const navigate = useNavigate();
 
   const handleToggleGame = (game: Game) => {
     toggleGame.mutate({ game });
+  };
+
+  const handleToggleAll = () => {
+    const allGames = getAllGames();
+    const allSelected = selectedGamesSet.size === allGames.length;
+    setGames.mutate({ games: allSelected ? [] : allGames });
   };
 
   const handleContextMenu = (game: Game) => {
@@ -26,6 +34,7 @@ export function GamesModifyContainer() {
       games={games}
       selectedGames={selectedGamesSet}
       onToggleGame={handleToggleGame}
+      onToggleAll={handleToggleAll}
       onContextMenu={handleContextMenu}
     />
   );

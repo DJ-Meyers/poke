@@ -35,7 +35,7 @@ export function AppLayout({
   children,
 }: AppLayoutProps) {
   return (
-    <div className="h-screen flex flex-col bg-bg text-text overflow-hidden">
+    <div className="h-dvh flex flex-col bg-bg text-text overflow-hidden">
       <Header
         title={title}
         backTo={backTo}
