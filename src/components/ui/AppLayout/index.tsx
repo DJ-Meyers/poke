@@ -1,5 +1,6 @@
 import { Header } from '~/components/ui/Header';
 import { ProgressBar } from '~/components/ui/ProgressBar';
+import { useScrollRestoration } from '~/hooks/use-scroll-restoration';
 
 interface AppLayoutProps {
   /** Page title */
@@ -34,6 +35,8 @@ export const AppLayout = ({
   headerChildren,
   children,
 }: AppLayoutProps) => {
+  const { setScrollRef } = useScrollRestoration();
+
   return (
     <div className="h-dvh flex flex-col bg-bg text-text overflow-hidden">
       <Header
@@ -63,7 +66,7 @@ export const AppLayout = ({
       </Header>
 
       {/* Main content */}
-      <main className="flex-1 overflow-auto">
+      <main ref={setScrollRef} className="flex-1 overflow-auto">
         <div className="max-w-md lg:max-w-4xl mx-auto w-full">{children}</div>
       </main>
     </div>
