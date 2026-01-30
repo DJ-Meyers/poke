@@ -5,6 +5,8 @@ interface DexSearchBarProps {
   onHideCompletedChange: (hide: boolean) => void;
   filteredCount: number;
   totalCount: number;
+  showBoxView: boolean;
+  onShowBoxViewChange: (show: boolean) => void;
 }
 
 export function DexSearchBar({
@@ -14,6 +16,8 @@ export function DexSearchBar({
   onHideCompletedChange,
   filteredCount,
   totalCount,
+  showBoxView,
+  onShowBoxViewChange,
 }: DexSearchBarProps) {
   const isFiltered = searchQuery.length > 0 || hideCompleted;
 
@@ -64,7 +68,7 @@ export function DexSearchBar({
           aria-label="Hide completed"
           className={`flex-shrink-0 p-2 rounded-lg border transition-colors cursor-pointer ${
             hideCompleted
-              ? 'bg-primary/15 border-primary text-primary'
+              ? 'bg-primary border-primary text-white'
               : 'bg-surface border-surface-hover text-text-muted/50 hover:text-text-muted'
           }`}
         >
@@ -84,6 +88,33 @@ export function DexSearchBar({
             <line x1="12" y1="12" x2="20" y2="12" />
             <path d="M4 19l2 2 4-4" />
             <line x1="12" y1="19" x2="20" y2="19" />
+          </svg>
+        </button>
+        {/* Box view toggle */}
+        <button
+          onClick={() => onShowBoxViewChange(!showBoxView)}
+          title="Box view"
+          aria-label="Box view"
+          className={`flex-shrink-0 p-2 rounded-lg border transition-colors cursor-pointer ${
+            showBoxView
+              ? 'bg-primary border-primary text-white'
+              : 'bg-surface border-surface-hover text-text-muted/50 hover:text-text-muted'
+          }`}
+        >
+          <svg
+            className="w-5 h-5"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth={2}
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          >
+            {/* Grid/box icon: 2x2 squares */}
+            <rect x="3" y="3" width="7" height="7" />
+            <rect x="14" y="3" width="7" height="7" />
+            <rect x="3" y="14" width="7" height="7" />
+            <rect x="14" y="14" width="7" height="7" />
           </svg>
         </button>
       </div>

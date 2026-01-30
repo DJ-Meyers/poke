@@ -57,6 +57,7 @@ export function NationalDexView({
         onPrimaryAction={onPrimaryAction}
         onSecondaryAction={onSecondaryAction}
         getOriginMarks={getOriginMarks}
+        isNationalDex
       />
     </AppLayout>
   );
