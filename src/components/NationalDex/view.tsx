@@ -41,7 +41,7 @@ export function NationalDexView({
           key={game}
           type="button"
           onClick={() => onToggleGame(game)}
-          className={`flex-1 px-4 py-3 text-center text-sm font-medium transition-colors border-b-2 ${
+          className={`flex-1 px-4 py-3 text-center text-sm font-medium transition-colors border-b-2 cursor-pointer ${
             selectedGames.has(game)
               ? 'bg-primary/15 border-primary text-primary'
               : 'border-transparent text-text-muted hover:text-text hover:bg-surface-hover'

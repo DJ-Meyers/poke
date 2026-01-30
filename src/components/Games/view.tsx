@@ -54,7 +54,7 @@ function GameCard({ game, onSecondaryAction }: GameCardProps) {
     >
       <div className="relative bg-surface hover:bg-surface-hover rounded-xl overflow-hidden transition-colors h-full flex flex-col">
         {/* Game cover image - bleeds to edges */}
-        <div className="relative h-36 w-full">
+        <div className="relative h-36 lg:h-56 w-full">
           <img
             src={coverImage}
             alt={game.displayName}
@@ -116,7 +116,7 @@ export function GamesView({
     >
       <div className="p-4 space-y-4">
         {/* Games grid */}
-        <div className="grid grid-cols-2 gap-3 items-stretch">
+        <div className="grid grid-cols-2 lg:grid-cols-3 gap-3 items-stretch">
           {games.map((game) => (
             <GameCard
               key={game.game}
