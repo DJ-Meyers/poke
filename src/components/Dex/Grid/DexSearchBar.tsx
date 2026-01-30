@@ -18,7 +18,7 @@ export function DexSearchBar({
   const isFiltered = searchQuery.length > 0 || hideCompleted;
 
   return (
-    <div className="sticky top-0 z-20 bg-bg px-4 pt-4 pb-3 flex flex-col gap-1.5">
+    <div className="sticky top-0 z-20 px-4 pt-4 pb-3 flex flex-col gap-1.5 w-3/4 max-w-md mx-auto">
       <div className="flex items-center gap-2">
         <div className="relative flex-1">
           {/* Magnifying glass icon */}

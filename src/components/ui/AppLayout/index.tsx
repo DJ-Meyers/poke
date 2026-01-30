@@ -64,7 +64,7 @@ export function AppLayout({
 
       {/* Main content */}
       <main className="flex-1 overflow-auto">
-        <div className="max-w-md mx-auto w-full">{children}</div>
+        <div className="max-w-md lg:max-w-4xl mx-auto w-full">{children}</div>
       </main>
     </div>
   );

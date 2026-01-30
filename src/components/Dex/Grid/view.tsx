@@ -68,7 +68,11 @@ class DexEntryErrorBoundary extends Component<
 
 const GridList = forwardRef<HTMLDivElement, ComponentPropsWithoutRef<'div'>>(
   (props, ref) => (
-    <div ref={ref} {...props} className="grid grid-cols-3 gap-3 px-4 pb-3" />
+    <div
+      ref={ref}
+      {...props}
+      className="grid grid-cols-3 lg:grid-cols-6 gap-3 px-4 pb-3"
+    />
   )
 );
 GridList.displayName = 'GridList';
