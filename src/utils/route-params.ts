@@ -15,27 +15,27 @@ import {
  * Parses a game ID from a URL parameter (case-insensitive).
  * Returns undefined if the game ID is not valid.
  */
-export function parseGameParam({
+export const parseGameParam = ({
   gameId,
 }: {
   gameId: string;
-}): Game | undefined {
+}): Game | undefined => {
   const normalized = gameId.toUpperCase();
   const games = Object.values(Game);
   return games.find((game) => game.toUpperCase() === normalized);
-}
+};
 
 /**
  * Parses a dex ID from a URL parameter for a specific game.
  * Returns undefined if the dex ID is not valid for the game.
  */
-export function parseDexParam({
+export const parseDexParam = ({
   game,
   dexId,
 }: {
   game: Game;
   dexId: string;
-}): GameDex | undefined {
+}): GameDex | undefined => {
   const normalized = dexId.toLowerCase();
   const dexes = getDexesForGame({ game });
 
@@ -44,23 +44,23 @@ export function parseDexParam({
     const dexPart = gameDex.split('_').slice(1).join('_').toLowerCase();
     return dexPart === normalized;
   });
-}
+};
 
 /**
  * Gets the URL-friendly dex ID from a GameDex value.
  * E.g., 'SV_PALDEA' -> 'paldea'
  */
-export function getDexUrlId({ gameDex }: { gameDex: GameDex }): string {
+export const getDexUrlId = ({ gameDex }: { gameDex: GameDex }): string => {
   return gameDex.split('_').slice(1).join('_').toLowerCase();
-}
+};
 
 /**
  * Gets the default dex URL ID for a game.
  */
-export function getDefaultDexUrlId({ game }: { game: Game }): string {
+export const getDefaultDexUrlId = ({ game }: { game: Game }): string => {
   const defaultDex = getDefaultDex({ game });
   return getDexUrlId({ gameDex: defaultDex });
-}
+};
 
 // --- Route param hooks (safe to call after loader has validated) ---
 
@@ -69,20 +69,20 @@ export function getDefaultDexUrlId({ game }: { game: Game }): string {
  * Throws if the param is missing or invalid.
  * Safe to call in components whose loader already validated.
  */
-export function useGameParam(): Game {
+export const useGameParam = (): Game => {
   const { gameId } = useParams();
   const game = gameId ? parseGameParam({ gameId }) : undefined;
   if (!game) {
     throw new Error(`Invalid game param: ${gameId}`);
   }
   return game;
-}
+};
 
 /**
  * Reads and parses the :gameId and :dexId URL params.
  * Throws if either param is missing or invalid.
  */
-export function useGameDexParams(): { game: Game; gameDex: GameDex } {
+export const useGameDexParams = (): { game: Game; gameDex: GameDex } => {
   const game = useGameParam();
   const { dexId } = useParams();
   const gameDex = dexId ? parseDexParam({ game, dexId }) : undefined;
@@ -90,18 +90,18 @@ export function useGameDexParams(): { game: Game; gameDex: GameDex } {
     throw new Error(`Invalid dex param: ${dexId}`);
   }
   return { game, gameDex };
-}
+};
 
 /**
  * Reads and parses the :gameId, :dexId, and :dexNumber URL params.
  * Throws if any param is missing or invalid.
  */
-export function useDexEntryParams(): {
+export const useDexEntryParams = (): {
   game: Game;
   gameDex: GameDex;
   pokemonId: number;
   regionalDexNumber: number;
-} {
+} => {
   const { game, gameDex } = useGameDexParams();
   const { dexNumber } = useParams();
   if (!dexNumber) {
@@ -114,4 +114,4 @@ export function useDexEntryParams(): {
   const pokemonIds = getPokemonIdsForDex({ gameDex });
   const regionalDexNumber = pokemonIds.indexOf(pokemonId) + 1;
   return { game, gameDex, pokemonId, regionalDexNumber };
-}
+};

@@ -4,10 +4,10 @@
 
 const STORAGE_KEY = 'storage_notice_dismissed';
 
-export function isStorageNoticeDismissed(): boolean {
+export const isStorageNoticeDismissed = (): boolean => {
   return localStorage.getItem(STORAGE_KEY) === 'true';
-}
+};
 
-export function dismissStorageNotice(): void {
+export const dismissStorageNotice = (): void => {
   localStorage.setItem(STORAGE_KEY, 'true');
-}
+};

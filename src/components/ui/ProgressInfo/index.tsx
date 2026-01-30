@@ -10,11 +10,11 @@ interface ProgressInfoProps {
 /**
  * Displays progress as "current / total" and percentage.
  */
-export function ProgressInfo({
+export const ProgressInfo = ({
   current,
   total,
   size = 'sm',
-}: ProgressInfoProps) {
+}: ProgressInfoProps) => {
   const percent = total > 0 ? Math.round((current / total) * 100) : 0;
   const textSize = size === 'xs' ? 'text-xs' : 'text-sm';
 
@@ -28,4 +28,4 @@ export function ProgressInfo({
       <span>{percent}%</span>
     </div>
   );
-}
+};

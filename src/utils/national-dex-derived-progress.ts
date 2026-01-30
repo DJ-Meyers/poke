@@ -23,7 +23,7 @@ export interface DerivedNationalDexData {
   caughtByGame: Map<DexSource, Set<number>>;
 }
 
-function readHomeProgress(): number[] {
+const readHomeProgress = (): number[] => {
   const stored = localStorage.getItem(HOME_STORAGE_KEY);
   if (!stored) return [];
   try {
@@ -33,9 +33,9 @@ function readHomeProgress(): number[] {
   } catch {
     return [];
   }
-}
+};
 
-export function toggleHomeCaught(pokemonId: number): boolean {
+export const toggleHomeCaught = (pokemonId: number): boolean => {
   const progress = readHomeProgress();
   const index = progress.indexOf(pokemonId);
   if (index !== -1) {
@@ -48,9 +48,9 @@ export function toggleHomeCaught(pokemonId: number): boolean {
     localStorage.setItem(HOME_STORAGE_KEY, JSON.stringify(progress));
     return true;
   }
-}
+};
 
-export function getDerivedNationalDexData(): DerivedNationalDexData {
+export const getDerivedNationalDexData = (): DerivedNationalDexData => {
   const caughtIds = new Set<number>();
   const caughtByGame = new Map<DexSource, Set<number>>();
 
@@ -83,4 +83,4 @@ export function getDerivedNationalDexData(): DerivedNationalDexData {
   }
 
   return { caughtIds, caughtByGame };
-}
+};

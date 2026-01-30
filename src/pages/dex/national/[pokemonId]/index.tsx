@@ -6,9 +6,9 @@ import { DexEntryDetail } from '~/components/DexEntryDetail';
  * Shows detailed information about a specific Pokémon from the national dex.
  * The loader handles param validation.
  */
-export function NationalDexEntryDetailPage() {
+export const NationalDexEntryDetailPage = () => {
   const { pokemonId: pokemonIdParam } = useParams();
   const pokemonId = Number(pokemonIdParam);
 
   return <DexEntryDetail pokemonId={pokemonId} regionalDexNumber={pokemonId} />;
-}
+};

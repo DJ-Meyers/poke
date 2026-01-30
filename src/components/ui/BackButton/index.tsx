@@ -10,7 +10,7 @@ interface BackButtonProps {
 /**
  * A back arrow button that navigates up in the hierarchy.
  */
-export function BackButton({ to, label = 'Go back' }: BackButtonProps) {
+export const BackButton = ({ to, label = 'Go back' }: BackButtonProps) => {
   return (
     <Link
       to={to}
@@ -31,4 +31,4 @@ export function BackButton({ to, label = 'Go back' }: BackButtonProps) {
       </svg>
     </Link>
   );
-}
+};

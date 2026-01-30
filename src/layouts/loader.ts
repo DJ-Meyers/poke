@@ -1,9 +1,9 @@
 import { redirect, type LoaderFunctionArgs } from 'react-router';
 import { isStorageNoticeDismissed } from '~/utils/storage-notice';
 
-export function rootLayoutLoader({
+export const rootLayoutLoader = ({
   request,
-}: LoaderFunctionArgs): Response | null {
+}: LoaderFunctionArgs): Response | null => {
   if (isStorageNoticeDismissed()) {
     return null;
   }
@@ -17,4 +17,4 @@ export function rootLayoutLoader({
   }
 
   return null;
-}
+};

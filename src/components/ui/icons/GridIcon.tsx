@@ -2,7 +2,7 @@ interface GridIconProps {
   className?: string;
 }
 
-export function GridIcon({ className }: GridIconProps) {
+export const GridIcon = ({ className }: GridIconProps) => {
   return (
     <svg
       className={className}
@@ -19,4 +19,4 @@ export function GridIcon({ className }: GridIconProps) {
       <rect x="14" y="14" width="7" height="7" />
     </svg>
   );
-}
+};

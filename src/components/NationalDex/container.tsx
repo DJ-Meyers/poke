@@ -6,7 +6,7 @@ import { pokemonToGames } from '~/utils/national-dex-origin-marks';
 import { useDexProgress } from '~/data/dex-progress';
 import { NationalDexView } from './view';
 
-export function NationalDexContainer() {
+export const NationalDexContainer = () => {
   const pokemonIds = getNationalDexPokemonIds();
   const { caughtIdsByDex } = useDexProgress();
   const caughtIds = caughtIdsByDex[GameDex.NATIONAL];
@@ -54,4 +54,4 @@ export function NationalDexContainer() {
       onToggleGame={handleToggleGame}
     />
   );
-}
+};

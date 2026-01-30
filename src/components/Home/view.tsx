@@ -1,6 +1,6 @@
 import { Link } from 'react-router';
 
-export function HomeView() {
+export const HomeView = () => {
   return (
     <div>
       <h1>Living Dex Tracker</h1>
@@ -10,4 +10,4 @@ export function HomeView() {
       </nav>
     </div>
   );
-}
+};

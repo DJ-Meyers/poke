@@ -6,19 +6,19 @@ import { filterDexEntries } from './use-dex-filter';
 const pokemonIds = [1, 4, 25, 94];
 const emptyCaught = new Set<number>();
 
-function filter(overrides: {
+const filter = (overrides: {
   searchQuery?: string;
   hideCompleted?: boolean;
   caughtIds?: Set<number>;
   pokemonIds?: number[];
-}) {
+}) => {
   return filterDexEntries({
     pokemonIds: overrides.pokemonIds ?? pokemonIds,
     caughtIds: overrides.caughtIds ?? emptyCaught,
     searchQuery: overrides.searchQuery ?? '',
     hideCompleted: overrides.hideCompleted ?? false,
   });
-}
+};
 
 describe('filterDexEntries', () => {
   describe('no filters active', () => {

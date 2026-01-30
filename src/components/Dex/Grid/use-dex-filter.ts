@@ -24,12 +24,12 @@ export interface UseDexFilterResult {
  * Returns filteredIds and a dexNumberMap so the grid can display the
  * original dex number even after filtering.
  */
-export function filterDexEntries({
+export const filterDexEntries = ({
   pokemonIds,
   caughtIds,
   searchQuery,
   hideCompleted,
-}: UseDexFilterParams): UseDexFilterResult {
+}: UseDexFilterParams): UseDexFilterResult => {
   const query = searchQuery.trim().toLowerCase();
   const isActive = query.length > 0 || hideCompleted;
 
@@ -74,8 +74,10 @@ export function filterDexEntries({
   }
 
   return { filteredIds, dexNumberMap };
-}
+};
 
-export function useDexFilter(params: UseDexFilterParams): UseDexFilterResult {
+export const useDexFilter = (
+  params: UseDexFilterParams
+): UseDexFilterResult => {
   return useMemo(() => filterDexEntries(params), [params]);
-}
+};

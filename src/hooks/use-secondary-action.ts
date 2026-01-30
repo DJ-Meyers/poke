@@ -29,9 +29,9 @@ interface SecondaryActionHandlers {
  * <button {...onMobilePressAndHold} {...onRightClick} />
  * ```
  */
-export function useSecondaryActionHandlers(
+export const useSecondaryActionHandlers = (
   onSecondaryAction: (() => void) | undefined
-): SecondaryActionHandlers {
+): SecondaryActionHandlers => {
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const firedRef = useRef(false);
   const startPos = useRef({ x: 0, y: 0 });
@@ -99,4 +99,4 @@ export function useSecondaryActionHandlers(
     onMobilePressAndHold: { onTouchStart, onTouchEnd, onTouchMove },
     onRightClick: { onContextMenu },
   };
-}
+};

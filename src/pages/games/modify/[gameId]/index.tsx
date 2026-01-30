@@ -1,5 +1,5 @@
 import { DexManageModal } from '~/components/DexManageModal';
 
-export function GamesModifyGamePage() {
+export const GamesModifyGamePage = () => {
   return <DexManageModal />;
-}
+};

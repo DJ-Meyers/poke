@@ -2,7 +2,7 @@ interface SearchIconProps {
   className?: string;
 }
 
-export function SearchIcon({ className }: SearchIconProps) {
+export const SearchIcon = ({ className }: SearchIconProps) => {
   return (
     <svg className={className} viewBox="0 0 20 20" fill="currentColor">
       <path
@@ -12,4 +12,4 @@ export function SearchIcon({ className }: SearchIconProps) {
       />
     </svg>
   );
-}
+};

@@ -16,7 +16,7 @@ interface DexSearchBarProps {
   onShowBoxViewChange: (show: boolean) => void;
 }
 
-export function DexSearchBar({
+export const DexSearchBar = ({
   searchQuery,
   onSearchChange,
   hideCompleted,
@@ -25,7 +25,7 @@ export function DexSearchBar({
   totalCount,
   showBoxView,
   onShowBoxViewChange,
-}: DexSearchBarProps) {
+}: DexSearchBarProps) => {
   const isFiltered = searchQuery.length > 0 || hideCompleted;
 
   return (
@@ -82,4 +82,4 @@ export function DexSearchBar({
       )}
     </div>
   );
-}
+};

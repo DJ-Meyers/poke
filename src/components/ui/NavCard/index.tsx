@@ -17,7 +17,7 @@ interface NavCardProps {
  * A navigation card with optional progress bar.
  * Used for linking to sub-sections like individual dexes.
  */
-export function NavCard({ to, title, progress }: NavCardProps) {
+export const NavCard = ({ to, title, progress }: NavCardProps) => {
   return (
     <Link
       to={to}
@@ -38,4 +38,4 @@ export function NavCard({ to, title, progress }: NavCardProps) {
       )}
     </Link>
   );
-}
+};

@@ -20,13 +20,13 @@ interface PageLayoutProps {
 /**
  * Common page layout with header, optional progress bar, and constrained content.
  */
-export function PageLayout({
+export const PageLayout = ({
   title,
   backTo,
   progress,
   subtitle,
   children,
-}: PageLayoutProps) {
+}: PageLayoutProps) => {
   return (
     <div className="min-h-screen bg-bg text-text">
       {/* Header */}
@@ -66,4 +66,4 @@ export function PageLayout({
       <main className="max-w-md mx-auto">{children}</main>
     </div>
   );
-}
+};

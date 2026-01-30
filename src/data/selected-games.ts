@@ -9,23 +9,23 @@ import { queryClient } from './query-client';
 
 // --- Query option factories (internal) ---
 
-function selectedGamesOptions() {
+const selectedGamesOptions = () => {
   return queryOptions({
     queryKey: ['selected-games'],
     queryFn: () => getSelectedGames(),
   });
-}
+};
 
 // --- Hooks (for components) ---
 
-export function useSelectedGames() {
+export const useSelectedGames = () => {
   const { data } = useQuery(selectedGamesOptions());
   return { selectedGames: data ?? [] };
-}
+};
 
 // --- Mutations ---
 
-export function useToggleGameSelection() {
+export const useToggleGameSelection = () => {
   return useMutation({
     mutationFn: ({ game }: { game: Game }) => {
       toggleGameSelection({ game });
@@ -35,9 +35,9 @@ export function useToggleGameSelection() {
       queryClient.invalidateQueries({ queryKey: ['selected-games'] });
     },
   });
-}
+};
 
-export function useSetSelectedGames() {
+export const useSetSelectedGames = () => {
   return useMutation({
     mutationFn: ({ games }: { games: Game[] }) => {
       setSelectedGames({ games });
@@ -47,4 +47,4 @@ export function useSetSelectedGames() {
       queryClient.invalidateQueries({ queryKey: ['selected-games'] });
     },
   });
-}
+};

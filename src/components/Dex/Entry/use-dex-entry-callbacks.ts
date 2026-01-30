@@ -18,7 +18,10 @@ const pokemonIdsByDex = getPokemonIdsByDex();
  * Hook that provides callbacks and state for a DexEntry.
  * Handles both regular game dexes and the National Dex.
  */
-export function useDexEntryCallbacks(pokemonId: number, gameDex: GameDexType) {
+export const useDexEntryCallbacks = (
+  pokemonId: number,
+  gameDex: GameDexType
+) => {
   const navigate = useNavigate();
   const isNational = isNationalDex(gameDex);
 
@@ -72,4 +75,4 @@ export function useDexEntryCallbacks(pokemonId: number, gameDex: GameDexType) {
     toggleCaught,
     viewDetails,
   };
-}
+};

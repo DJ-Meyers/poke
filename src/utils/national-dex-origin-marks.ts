@@ -5,7 +5,7 @@
 
 import { type Game, DEX_DATA, type DexDataEntry } from '../../data/dex';
 
-export function buildPokemonToGamesMap(): Map<number, Game[]> {
+export const buildPokemonToGamesMap = (): Map<number, Game[]> => {
   const map = new Map<number, Game[]>();
 
   for (const dex of Object.values(DEX_DATA) as DexDataEntry[]) {
@@ -23,7 +23,7 @@ export function buildPokemonToGamesMap(): Map<number, Game[]> {
   }
 
   return map;
-}
+};
 
 /** Pre-computed at module level — static data, safe to share. */
 export const pokemonToGames = buildPokemonToGamesMap();

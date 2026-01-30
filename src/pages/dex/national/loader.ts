@@ -6,10 +6,10 @@
 import { getNationalDexPokemonIds } from '~/utils/national-dex';
 import { prefetchGetPokemonById } from '~/data/pokemon';
 
-export function nationalDexLoader() {
+export const nationalDexLoader = () => {
   const pokemonIds = getNationalDexPokemonIds();
   for (const id of pokemonIds) {
     prefetchGetPokemonById({ id });
   }
   return null;
-}
+};

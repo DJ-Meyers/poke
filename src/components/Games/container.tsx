@@ -3,7 +3,7 @@ import { useAllGamesProgress } from '~/data/dex-progress';
 import { useSelectedGames } from '~/data/selected-games';
 import { GamesView } from './view';
 
-export function GamesContainer() {
+export const GamesContainer = () => {
   const { games, nationalDexProgress } = useAllGamesProgress();
   const { selectedGames } = useSelectedGames();
   const selectedSet = new Set(selectedGames);
@@ -22,4 +22,4 @@ export function GamesContainer() {
       onGameSecondaryAction={handleManageGame}
     />
   );
-}
+};

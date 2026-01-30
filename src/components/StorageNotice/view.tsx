@@ -2,7 +2,7 @@ interface StorageNoticeViewProps {
   onDismiss: () => void;
 }
 
-export function StorageNoticeView({ onDismiss }: StorageNoticeViewProps) {
+export const StorageNoticeView = ({ onDismiss }: StorageNoticeViewProps) => {
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60">
       <div className="bg-surface rounded-xl p-5 mx-4 w-full max-w-sm space-y-4">
@@ -26,4 +26,4 @@ export function StorageNoticeView({ onDismiss }: StorageNoticeViewProps) {
       </div>
     </div>
   );
-}
+};

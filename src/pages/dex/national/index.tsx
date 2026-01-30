@@ -1,5 +1,5 @@
 import { NationalDex } from '~/components/NationalDex';
 
-export function NationalDexPage() {
+export const NationalDexPage = () => {
   return <NationalDex />;
-}
+};

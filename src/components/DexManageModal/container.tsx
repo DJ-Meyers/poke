@@ -8,7 +8,7 @@ import {
 } from '~/data/dex-progress';
 import { DexManageModalView } from './view';
 
-export function DexManageModalContainer() {
+export const DexManageModalContainer = () => {
   const game = useGameParam();
   const dexes = getDexesForGame({ game });
   const { dexProgressInfo } = useDexProgressInfo({ game });
@@ -38,4 +38,4 @@ export function DexManageModalContainer() {
       onClose={handleClose}
     />
   );
-}
+};

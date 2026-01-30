@@ -11,22 +11,22 @@ import {
   prefetchGetPokemonSpeciesById,
 } from '~/data/pokemon';
 
-function createLoaderArgs(params: Record<string, string | undefined>) {
+const createLoaderArgs = (params: Record<string, string | undefined>) => {
   return {
     params,
     request: new Request('http://localhost/'),
   } as Parameters<typeof dexEntryDetailLoader>[0];
-}
+};
 
-function isRedirect(result: unknown): result is Response {
+const isRedirect = (result: unknown): result is Response => {
   return (
     result instanceof Response && result.status >= 300 && result.status < 400
   );
-}
+};
 
-function getRedirectLocation(response: Response): string {
+const getRedirectLocation = (response: Response): string => {
   return response.headers.get('Location') || '';
-}
+};
 
 describe('dexEntryDetailLoader', () => {
   beforeEach(() => {

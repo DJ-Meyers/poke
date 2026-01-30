@@ -37,11 +37,11 @@ GridItem.displayName = 'GridItem';
  * Renders a virtualized grid of Pokemon entries in 3 columns.
  * Only renders visible items for better performance with large dexes.
  */
-export function DexGridView({
+export const DexGridView = ({
   pokemonIds,
   caughtIds,
   gameDex,
-}: DexGridViewProps) {
+}: DexGridViewProps) => {
   const [scrollParent, setScrollParent] = useState<HTMLElement | null>(null);
   const containerRef = useCallback((node: HTMLDivElement | null) => {
     setScrollParent(node?.closest('main') ?? null);
@@ -129,4 +129,4 @@ export function DexGridView({
       )}
     </div>
   );
-}
+};

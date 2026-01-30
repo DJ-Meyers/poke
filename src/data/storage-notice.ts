@@ -7,23 +7,23 @@ import { queryClient } from './query-client';
 
 // --- Query option factories (internal) ---
 
-function storageNoticeOptions() {
+const storageNoticeOptions = () => {
   return queryOptions({
     queryKey: ['storage-notice'],
     queryFn: () => isStorageNoticeDismissed(),
   });
-}
+};
 
 // --- Hooks (for components) ---
 
-export function useIsStorageNoticeDismissed() {
+export const useIsStorageNoticeDismissed = () => {
   const { data } = useQuery(storageNoticeOptions());
   return { isDismissed: data ?? false };
-}
+};
 
 // --- Mutations ---
 
-export function useDismissStorageNotice() {
+export const useDismissStorageNotice = () => {
   return useMutation({
     mutationFn: () => {
       dismissStorageNotice();
@@ -33,4 +33,4 @@ export function useDismissStorageNotice() {
       queryClient.invalidateQueries({ queryKey: ['storage-notice'] });
     },
   });
-}
+};

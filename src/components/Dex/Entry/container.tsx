@@ -11,7 +11,7 @@ interface DexEntryProps {
   gameDex: GameDex;
 }
 
-function DexEntryFetcher({ pokemonId, gameDex }: DexEntryProps) {
+const DexEntryFetcher = ({ pokemonId, gameDex }: DexEntryProps) => {
   const { data: pokemon } = useSuspenseGetPokemonById({ id: pokemonId });
   const {
     isComplete,
@@ -31,13 +31,13 @@ function DexEntryFetcher({ pokemonId, gameDex }: DexEntryProps) {
       originMarks={originMarks}
     />
   );
-}
+};
 
 /**
  * DexEntry component that handles data fetching, Suspense, and error boundaries internally.
  * Pass a gameDex (including GameDex.NATIONAL for the National Dex) to determine behavior.
  */
-export function DexEntry({ pokemonId, gameDex }: DexEntryProps) {
+export const DexEntry = ({ pokemonId, gameDex }: DexEntryProps) => {
   return (
     <DexEntryErrorBoundary pokemonId={pokemonId}>
       <Suspense fallback={<DexEntryPlaceholder />}>
@@ -45,4 +45,4 @@ export function DexEntry({ pokemonId, gameDex }: DexEntryProps) {
       </Suspense>
     </DexEntryErrorBoundary>
   );
-}
+};

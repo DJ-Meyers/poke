@@ -5,21 +5,21 @@
 /**
  * Returns the sprite URL for a Pokémon from PokéAPI.
  */
-export function getPokemonSpriteUrl({
+export const getPokemonSpriteUrl = ({
   pokemonId,
 }: {
   pokemonId: number;
-}): string {
+}): string => {
   return `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${pokemonId}.png`;
-}
+};
 
 /**
  * Returns the official artwork URL for a Pokémon from PokéAPI.
  */
-export function getPokemonArtworkUrl({
+export const getPokemonArtworkUrl = ({
   pokemonId,
 }: {
   pokemonId: number;
-}): string {
+}): string => {
   return `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${pokemonId}.png`;
-}
+};
