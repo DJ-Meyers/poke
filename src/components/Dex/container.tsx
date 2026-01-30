@@ -1,13 +1,10 @@
-import { useMemo } from 'react';
-import { useNavigate } from 'react-router';
 import {
   getDexInfo,
   getDexesForGame,
   type Game,
   type GameDex,
 } from '~/utils/dex-data';
-import { getDexUrlId } from '~/utils/route-params';
-import { useDexProgress, useToggleDexCaught } from '~/data/dex-progress';
+import { useDexProgress } from '~/data/dex-progress';
 import { DexView } from './view';
 import { DexGridView } from './Grid/view';
 
@@ -18,25 +15,13 @@ interface DexContainerProps {
 
 /**
  * Container for the full Dex page.
- * Manages caught state and renders navigation + grid.
+ * DexEntry components handle their own callbacks via useDexEntryCallbacks hook.
  */
 export function DexContainer({ game, currentDex }: DexContainerProps) {
-  const navigate = useNavigate();
   const dexes = getDexesForGame({ game });
   const dexInfo = getDexInfo({ gameDex: currentDex });
-
-  const { caughtIds } = useDexProgress({ gameDex: currentDex });
-  const caughtIdsSet = useMemo(() => new Set(caughtIds), [caughtIds]);
-  const toggleCaught = useToggleDexCaught();
-
-  const handleToggleCaught = (pokemonId: number) => {
-    toggleCaught.mutate({ gameDex: currentDex, pokemonId });
-  };
-
-  const handleViewPokemon = (pokemonId: number) => {
-    const dexUrlId = getDexUrlId({ gameDex: currentDex });
-    navigate(`/dex/${game.toLowerCase()}/${dexUrlId}/${pokemonId}`);
-  };
+  const { caughtIdsByDex } = useDexProgress();
+  const dexCaughtIds = caughtIdsByDex[currentDex];
 
   return (
     <DexView
@@ -44,13 +29,12 @@ export function DexContainer({ game, currentDex }: DexContainerProps) {
       dexes={dexes}
       currentDex={currentDex}
       totalCount={dexInfo.pokemonIds.length}
-      caughtCount={caughtIdsSet.size}
+      caughtCount={dexCaughtIds.size}
     >
       <DexGridView
         pokemonIds={dexInfo.pokemonIds}
-        caughtIds={caughtIdsSet}
-        onPrimaryAction={handleToggleCaught}
-        onSecondaryAction={handleViewPokemon}
+        caughtIds={dexCaughtIds}
+        gameDex={currentDex}
       />
     </DexView>
   );

@@ -1,9 +1,11 @@
 import { queryOptions, useMutation, useQuery } from '@tanstack/react-query';
-import type { Game, GameDex } from '~/utils/dex-data';
+import type { Game } from '~/utils/dex-data';
 import {
+  GameDex,
   getDexesForGame,
   getAllGamesInfo,
-  getGameForDex,
+  isNationalDex,
+  isRegularGameDex,
 } from '~/utils/dex-data';
 import {
   getProgressForDex,
@@ -15,6 +17,11 @@ import {
   getNationalDexProgress,
   type DexProgressInfo,
 } from '~/utils/dex-progress';
+import {
+  getDerivedNationalDexData,
+  toggleHomeCaught,
+  type DexSource,
+} from '~/utils/national-dex-derived-progress';
 import { queryClient } from './query-client';
 
 // --- Query key factories ---
@@ -26,19 +33,9 @@ export const dexProgressKeys = {
   gameProgress: (game: Game) =>
     ['dex-progress', 'game', game, 'progress'] as const,
   gameInfo: (game: Game) => ['dex-progress', 'game', game, 'info'] as const,
-  dex: (game: Game, gameDex: GameDex) =>
-    ['dex-progress', 'game', game, 'dex', gameDex] as const,
 };
 
 // --- Query option factories (internal) ---
-
-function dexProgressOptions({ gameDex }: { gameDex: GameDex }) {
-  const game = getGameForDex({ gameDex });
-  return queryOptions({
-    queryKey: dexProgressKeys.dex(game, gameDex),
-    queryFn: () => getProgressForDex({ gameDex }),
-  });
-}
 
 function gameProgressOptions({ game }: { game: Game }) {
   return queryOptions({
@@ -88,11 +85,67 @@ function allGamesProgressOptions() {
   });
 }
 
+export interface AllDexProgressData {
+  /** Caught IDs indexed by GameDex (including NATIONAL). */
+  caughtIdsByDex: Record<GameDex, Set<number>>;
+  /** Caught IDs indexed by Game (union of all dexes within a game), plus HOME. For origin marks. */
+  caughtIdsByGame: Record<DexSource, Set<number>>;
+}
+
+function allDexProgressOptions() {
+  return queryOptions({
+    queryKey: [...dexProgressKeys.all, 'all-dex'] as const,
+    queryFn: (): AllDexProgressData => {
+      // Get national dex derived data (includes caughtByGame for origin marks)
+      const nationalData = getDerivedNationalDexData();
+
+      // Build caughtIdsByDex for each dex
+      const caughtIdsByDex = {} as Record<GameDex, Set<number>>;
+
+      for (const gameDex of Object.values(GameDex)) {
+        if (isRegularGameDex(gameDex)) {
+          caughtIdsByDex[gameDex] = new Set(getProgressForDex({ gameDex }));
+        } else {
+          // NATIONAL uses the derived caught IDs (caught in HOME or any game)
+          caughtIdsByDex[gameDex] = nationalData.caughtIds;
+        }
+      }
+
+      // Convert Map to Record for caughtIdsByGame
+      const caughtIdsByGame = {} as Record<DexSource, Set<number>>;
+      for (const [key, value] of nationalData.caughtByGame) {
+        caughtIdsByGame[key] = value;
+      }
+
+      return {
+        caughtIdsByDex,
+        caughtIdsByGame,
+      };
+    },
+  });
+}
+
 // --- Hooks (for components) ---
 
-export function useDexProgress({ gameDex }: { gameDex: GameDex }) {
-  const { data } = useQuery(dexProgressOptions({ gameDex }));
-  return { caughtIds: data ?? [] };
+const EMPTY_BY_DEX: Record<GameDex, Set<number>> = Object.fromEntries(
+  Object.values(GameDex).map((dex) => [dex, new Set<number>()])
+) as Record<GameDex, Set<number>>;
+const EMPTY_BY_GAME: Record<DexSource, Set<number>> = {} as Record<
+  DexSource,
+  Set<number>
+>;
+
+/**
+ * Returns progress for all dexes including NATIONAL.
+ * - caughtIdsByDex: indexed by GameDex enum values
+ * - caughtIdsByGame: indexed by Game enum values (plus 'HOME')
+ */
+export function useDexProgress(): AllDexProgressData {
+  const { data } = useQuery(allDexProgressOptions());
+  return {
+    caughtIdsByDex: data?.caughtIdsByDex ?? EMPTY_BY_DEX,
+    caughtIdsByGame: data?.caughtIdsByGame ?? EMPTY_BY_GAME,
+  };
 }
 
 export function useGameProgress({ game }: { game: Game }) {
@@ -121,6 +174,10 @@ export function useAllGamesProgress() {
 
 // --- Mutations ---
 
+/**
+ * Toggle caught status for any dex, including NATIONAL.
+ * For NATIONAL, toggles the HOME storage. For regular dexes, toggles the dex-specific storage.
+ */
 export function useToggleDexCaught() {
   return useMutation({
     mutationFn: ({
@@ -130,7 +187,11 @@ export function useToggleDexCaught() {
       gameDex: GameDex;
       pokemonId: number;
     }) => {
-      toggleCaughtForDex({ gameDex, pokemonId });
+      if (isNationalDex(gameDex)) {
+        toggleHomeCaught(pokemonId);
+      } else {
+        toggleCaughtForDex({ gameDex, pokemonId });
+      }
       return Promise.resolve();
     },
     onSuccess: () => {
@@ -163,4 +224,4 @@ export function useResetDex() {
   });
 }
 
-export type { DexProgressInfo };
+export type { DexProgressInfo, DexSource };

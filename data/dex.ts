@@ -30,6 +30,8 @@ import plzaMegaDimension from './dexes/PLZA/mega_dimension.json';
  * Enum of all available game dexes.
  */
 export const GameDex = {
+  // National
+  NATIONAL: 'NATIONAL',
   // LGPE
   LGPE_KANTO: 'LGPE_KANTO',
   // SwSh
@@ -50,6 +52,9 @@ export const GameDex = {
 } as const;
 
 export type GameDex = (typeof GameDex)[keyof typeof GameDex];
+
+/** GameDex values that have data in DEX_DATA (excludes NATIONAL). */
+export type RegularGameDex = Exclude<GameDex, 'NATIONAL'>;
 
 /**
  * Enum of all available games.
@@ -76,9 +81,9 @@ export interface DexDataEntry {
 }
 
 /**
- * Complete data for all dexes, keyed by GameDex.
+ * Complete data for all dexes, keyed by GameDex (excludes NATIONAL which has no static data).
  */
-export const DEX_DATA: Record<GameDex, DexDataEntry> = {
+export const DEX_DATA: Record<RegularGameDex, DexDataEntry> = {
   [GameDex.LGPE_KANTO]: {
     game: Game.LGPE,
     gameDisplayName: "Let's Go Pikachu & Eevee",
@@ -150,7 +155,7 @@ export const DEX_DATA: Record<GameDex, DexDataEntry> = {
 /**
  * Mapping of games to their available dexes.
  */
-export const GAME_DEXES: Record<Game, GameDex[]> = {
+export const GAME_DEXES: Record<Game, RegularGameDex[]> = {
   [Game.LGPE]: [GameDex.LGPE_KANTO],
   [Game.SWSH]: [
     GameDex.SWSH_GALAR,

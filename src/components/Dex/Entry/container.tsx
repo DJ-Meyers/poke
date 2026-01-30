@@ -1,40 +1,48 @@
+import { Suspense } from 'react';
 import { useSuspenseGetPokemonById } from '~/data/pokemon';
-import type { OriginMark } from './origin-marks';
+import type { GameDex } from '~/utils/dex-data';
 import { DexEntryView } from './view';
+import { DexEntryPlaceholder } from './Placeholder';
+import { DexEntryErrorBoundary } from './ErrorBoundary';
+import { useDexEntryCallbacks } from './use-dex-entry-callbacks';
 
-interface DexEntryContainerProps {
+interface DexEntryProps {
   pokemonId: number;
-  isComplete: boolean;
-  onPrimaryAction?: (id: number) => void;
-  onSecondaryAction?: (id: number) => void;
-  /** 1-indexed regional dex number. If undefined, only national number is shown. */
-  regionalDexNumber?: number;
-  /** Origin marks showing which games this Pokémon appears in. */
-  originMarks?: OriginMark[];
+  gameDex: GameDex;
 }
 
-/**
- * Container component that reads Pokemon data from the React Query cache.
- * Uses useSuspenseQuery — a parent Suspense boundary handles loading state.
- */
-export function DexEntryContainer({
-  pokemonId,
-  isComplete,
-  onPrimaryAction,
-  onSecondaryAction,
-  regionalDexNumber,
-  originMarks,
-}: DexEntryContainerProps) {
+function DexEntryFetcher({ pokemonId, gameDex }: DexEntryProps) {
   const { data: pokemon } = useSuspenseGetPokemonById({ id: pokemonId });
+  const {
+    isComplete,
+    regionalDexNumber,
+    originMarks,
+    toggleCaught,
+    viewDetails,
+  } = useDexEntryCallbacks(pokemonId, gameDex);
 
   return (
     <DexEntryView
       pokemon={pokemon}
       isComplete={isComplete}
-      onPrimaryAction={onPrimaryAction}
-      onSecondaryAction={onSecondaryAction}
+      onPrimaryAction={toggleCaught}
+      onSecondaryAction={viewDetails}
       regionalDexNumber={regionalDexNumber}
       originMarks={originMarks}
     />
+  );
+}
+
+/**
+ * DexEntry component that handles data fetching, Suspense, and error boundaries internally.
+ * Pass a gameDex (including GameDex.NATIONAL for the National Dex) to determine behavior.
+ */
+export function DexEntry({ pokemonId, gameDex }: DexEntryProps) {
+  return (
+    <DexEntryErrorBoundary pokemonId={pokemonId}>
+      <Suspense fallback={<DexEntryPlaceholder />}>
+        <DexEntryFetcher pokemonId={pokemonId} gameDex={gameDex} />
+      </Suspense>
+    </DexEntryErrorBoundary>
   );
 }

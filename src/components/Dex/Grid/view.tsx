@@ -1,15 +1,12 @@
 import {
-  Suspense,
   useCallback,
   useState,
-  Component,
   forwardRef,
-  type ReactNode,
   type ComponentPropsWithoutRef,
 } from 'react';
 import { VirtuosoGrid } from 'react-virtuoso';
 import { DexEntry } from '~/components/Dex/Entry';
-import type { OriginMark } from '~/components/Dex/Entry/origin-marks';
+import { isNationalDex, type GameDex } from '~/utils/dex-data';
 import { DexSearchBar } from './DexSearchBar';
 import { useDexFilter } from './use-dex-filter';
 import { BoxView } from './BoxView';
@@ -17,56 +14,7 @@ import { BoxView } from './BoxView';
 interface DexGridViewProps {
   pokemonIds: number[];
   caughtIds: Set<number>;
-  onPrimaryAction?: (pokemonId: number) => void;
-  onSecondaryAction?: (pokemonId: number) => void;
-  getOriginMarks?: (pokemonId: number) => OriginMark[];
-  /** When true, box view breaks at generation boundaries (for National Dex) */
-  isNationalDex?: boolean;
-}
-
-/** Pulse placeholder that mirrors DexEntryView's layout to prevent shift. */
-function DexEntryPlaceholder() {
-  return (
-    <div className="relative flex flex-col items-center justify-center aspect-square w-full">
-      <div className="absolute inset-0 rounded-lg bg-gray-700 animate-pulse" />
-      {/* Matches the w-16 h-16 sprite container in DexEntryView */}
-      <div className="relative z-10 w-16 h-16" />
-      {/* Matches the name + dex number text block in DexEntryView */}
-      <div className="relative z-10 text-center">
-        <span className="block text-xs leading-tight">&nbsp;</span>
-        <span className="block text-[10px]">&nbsp;</span>
-      </div>
-    </div>
-  );
-}
-
-/** Per-entry error boundary so one failed fetch doesn't break the grid. */
-class DexEntryErrorBoundary extends Component<
-  { pokemonId: number; children: ReactNode },
-  { hasError: boolean }
-> {
-  constructor(props: { pokemonId: number; children: ReactNode }) {
-    super(props);
-    this.state = { hasError: false };
-  }
-
-  static getDerivedStateFromError() {
-    return { hasError: true };
-  }
-
-  render() {
-    if (this.state.hasError) {
-      return (
-        <div className="relative flex flex-col items-center justify-center w-24 h-24 p-1">
-          <div className="absolute inset-0 rounded-lg bg-red-900/50" />
-          <span className="relative z-10 text-xs font-medium text-white/50">
-            Error loading #{this.props.pokemonId}
-          </span>
-        </div>
-      );
-    }
-    return this.props.children;
-  }
+  gameDex: GameDex;
 }
 
 const GridList = forwardRef<HTMLDivElement, ComponentPropsWithoutRef<'div'>>(
@@ -92,10 +40,7 @@ GridItem.displayName = 'GridItem';
 export function DexGridView({
   pokemonIds,
   caughtIds,
-  onPrimaryAction,
-  onSecondaryAction,
-  getOriginMarks,
-  isNationalDex = false,
+  gameDex,
 }: DexGridViewProps) {
   const [scrollParent, setScrollParent] = useState<HTMLElement | null>(null);
   const containerRef = useCallback((node: HTMLDivElement | null) => {
@@ -136,7 +81,7 @@ export function DexGridView({
     }
   };
 
-  const { filteredIds, dexNumberMap } = useDexFilter({
+  const { filteredIds } = useDexFilter({
     pokemonIds,
     caughtIds,
     searchQuery,
@@ -159,12 +104,8 @@ export function DexGridView({
         <BoxView
           pokemonIds={pokemonIds}
           filteredIds={new Set(filteredIds)}
-          dexNumberMap={dexNumberMap}
-          caughtIds={caughtIds}
-          onPrimaryAction={onPrimaryAction}
-          onSecondaryAction={onSecondaryAction}
-          getOriginMarks={getOriginMarks}
-          respectGenerationBoundaries={isNationalDex}
+          gameDex={gameDex}
+          respectGenerationBoundaries={isNationalDex(gameDex)}
         />
       ) : filteredIds.length === 0 &&
         (searchQuery.length > 0 || hideCompleted) ? (
@@ -181,24 +122,7 @@ export function DexGridView({
             components={{ List: GridList, Item: GridItem }}
             itemContent={(index: number) => {
               const pokemonId = filteredIds[index];
-              const regionalDexNumber =
-                dexNumberMap.get(pokemonId) ?? index + 1;
-              return (
-                <div className="w-full">
-                  <DexEntryErrorBoundary pokemonId={pokemonId}>
-                    <Suspense fallback={<DexEntryPlaceholder />}>
-                      <DexEntry
-                        pokemonId={pokemonId}
-                        isComplete={caughtIds.has(pokemonId)}
-                        onPrimaryAction={onPrimaryAction}
-                        onSecondaryAction={onSecondaryAction}
-                        regionalDexNumber={regionalDexNumber}
-                        originMarks={getOriginMarks?.(pokemonId)}
-                      />
-                    </Suspense>
-                  </DexEntryErrorBoundary>
-                </div>
-              );
+              return <DexEntry pokemonId={pokemonId} gameDex={gameDex} />;
             }}
           />
         )

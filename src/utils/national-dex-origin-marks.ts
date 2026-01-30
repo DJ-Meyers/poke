@@ -3,13 +3,12 @@
  * Iterates all game dexes once. The result is static data.
  */
 
-import { type Game, DEX_DATA } from '../../data/dex';
-import type { GameDex } from '../../data/dex';
+import { type Game, DEX_DATA, type DexDataEntry } from '../../data/dex';
 
 export function buildPokemonToGamesMap(): Map<number, Game[]> {
   const map = new Map<number, Game[]>();
 
-  for (const dex of Object.values(DEX_DATA) as (typeof DEX_DATA)[GameDex][]) {
+  for (const dex of Object.values(DEX_DATA) as DexDataEntry[]) {
     const game = dex.game;
     for (const id of dex.pokemonIds) {
       const games = map.get(id);

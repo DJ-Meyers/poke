@@ -1,6 +1,7 @@
 import { render, screen } from '@testing-library/react';
 import { describe, it, expect, vi } from 'vitest';
 import { BoxView } from './BoxView';
+import { GameDex } from '~/utils/dex-data';
 
 // Mock DexEntry to avoid fetching Pokemon data
 vi.mock('~/components/Dex/Entry', () => ({
@@ -11,8 +12,7 @@ vi.mock('~/components/Dex/Entry', () => ({
 
 describe('BoxView rendering', () => {
   const defaultProps = {
-    dexNumberMap: new Map<number, number>(),
-    caughtIds: new Set<number>(),
+    gameDex: GameDex.LGPE_KANTO,
   };
 
   it('renders box headers with correct ranges', () => {

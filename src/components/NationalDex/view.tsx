@@ -1,6 +1,5 @@
-import { type Game, Game as GameEnum } from '../../../data/dex';
+import { type Game, Game as GameEnum, GameDex } from '../../../data/dex';
 import { DexGridView } from '~/components/Dex/Grid/view';
-import type { OriginMark } from '~/components/Dex/Entry/origin-marks';
 import { AppLayout } from '~/components/ui';
 
 const GAME_FILTER_BUTTONS: { label: string; game: Game }[] = [
@@ -17,9 +16,6 @@ interface NationalDexViewProps {
   caughtIds: Set<number>;
   selectedGames: Set<Game>;
   onToggleGame: (game: Game) => void;
-  onPrimaryAction: (pokemonId: number) => void;
-  onSecondaryAction: (pokemonId: number) => void;
-  getOriginMarks: (pokemonId: number) => OriginMark[];
 }
 
 export function NationalDexView({
@@ -27,9 +23,6 @@ export function NationalDexView({
   caughtIds,
   selectedGames,
   onToggleGame,
-  onPrimaryAction,
-  onSecondaryAction,
-  getOriginMarks,
 }: NationalDexViewProps) {
   return (
     <AppLayout
@@ -54,10 +47,7 @@ export function NationalDexView({
       <DexGridView
         pokemonIds={pokemonIds}
         caughtIds={caughtIds}
-        onPrimaryAction={onPrimaryAction}
-        onSecondaryAction={onSecondaryAction}
-        getOriginMarks={getOriginMarks}
-        isNationalDex
+        gameDex={GameDex.NATIONAL}
       />
     </AppLayout>
   );

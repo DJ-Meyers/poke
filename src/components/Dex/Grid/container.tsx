@@ -1,6 +1,5 @@
-import { useState } from 'react';
 import { getDexInfo, type GameDex } from '~/utils/dex-data';
-import { getProgressForDex, toggleCaughtForDex } from '~/utils/dex-progress';
+import { useDexProgress } from '~/data/dex-progress';
 import { DexGridView } from './view';
 
 interface DexGridContainerProps {
@@ -8,33 +7,17 @@ interface DexGridContainerProps {
 }
 
 /**
- * Container that manages Pokemon caught state and provides toggle callback.
+ * Container that manages Pokemon caught state for the grid view.
  */
 export function DexGridContainer({ gameDex }: DexGridContainerProps) {
   const dexInfo = getDexInfo({ gameDex });
-
-  const [caughtIds, setCaughtIds] = useState<Set<number>>(() => {
-    return new Set(getProgressForDex({ gameDex }));
-  });
-
-  const handleToggleCaught = (pokemonId: number) => {
-    const isNowCaught = toggleCaughtForDex({ gameDex, pokemonId });
-    setCaughtIds((prev) => {
-      const next = new Set(prev);
-      if (isNowCaught) {
-        next.add(pokemonId);
-      } else {
-        next.delete(pokemonId);
-      }
-      return next;
-    });
-  };
+  const { caughtIdsByDex } = useDexProgress();
 
   return (
     <DexGridView
       pokemonIds={dexInfo.pokemonIds}
-      caughtIds={caughtIds}
-      onPrimaryAction={handleToggleCaught}
+      caughtIds={caughtIdsByDex[gameDex]}
+      gameDex={gameDex}
     />
   );
 }
