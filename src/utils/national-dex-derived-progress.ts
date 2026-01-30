@@ -3,8 +3,14 @@
  * A Pokémon is "caught" in the national dex if it's caught in HOME or ANY game dex.
  */
 
-import { type Game, GameDex, DEX_DATA } from '../../data/dex';
+import {
+  type Game,
+  GameDex,
+  DEX_DATA,
+  type DexDataEntry,
+} from '../../data/dex';
 import { getProgressForDex } from './dex-progress';
+import { isNationalDex } from './dex-data';
 
 export const HOME_STORAGE_KEY = 'dex:HOME';
 
@@ -57,9 +63,11 @@ export function getDerivedNationalDexData(): DerivedNationalDexData {
     homeSet.add(id);
   }
 
-  // Read per-game-dex progress
+  // Read per-game-dex progress (skip NATIONAL as it doesn't have DEX_DATA)
   for (const gameDex of Object.values(GameDex) as GameDex[]) {
-    const game = DEX_DATA[gameDex].game;
+    if (isNationalDex(gameDex)) continue;
+    const dexData = (DEX_DATA as Record<string, DexDataEntry>)[gameDex];
+    const game = dexData.game;
     const progress = getProgressForDex({ gameDex });
 
     let gameSet = caughtByGame.get(game);

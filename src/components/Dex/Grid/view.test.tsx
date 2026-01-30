@@ -2,6 +2,7 @@ import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { DexGridView } from './view';
+import { GameDex } from '~/utils/dex-data';
 
 // Mock react-virtuoso to avoid scroll-parent complexity
 vi.mock('react-virtuoso', () => ({
@@ -22,6 +23,7 @@ vi.mock('./BoxView', () => ({
 const defaultProps = {
   pokemonIds: [1, 4, 25, 94],
   caughtIds: new Set<number>(),
+  gameDex: GameDex.LGPE_KANTO,
 };
 
 // Clear localStorage before each test

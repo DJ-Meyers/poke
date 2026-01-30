@@ -1,21 +1,15 @@
 import { useCallback, useMemo, useState } from 'react';
-import { useNavigate } from 'react-router';
 import type { Game } from '../../../data/dex';
+import { GameDex } from '~/utils/dex-data';
 import { getNationalDexPokemonIds } from '~/utils/national-dex';
 import { pokemonToGames } from '~/utils/national-dex-origin-marks';
-import {
-  useNationalDexDerived,
-  useToggleHomeCaught,
-} from '~/data/national-dex-progress';
-import type { OriginMark } from '~/components/Dex/Entry/origin-marks';
+import { useDexProgress } from '~/data/dex-progress';
 import { NationalDexView } from './view';
 
 export function NationalDexContainer() {
-  const navigate = useNavigate();
   const pokemonIds = getNationalDexPokemonIds();
-
-  const { caughtIds, caughtByGame } = useNationalDexDerived();
-  const toggleHome = useToggleHomeCaught();
+  const { caughtIdsByDex } = useDexProgress();
+  const caughtIds = caughtIdsByDex[GameDex.NATIONAL];
 
   const [selectedGames, setSelectedGames] = useState<Set<Game>>(new Set());
 
@@ -52,49 +46,12 @@ export function NationalDexContainer() {
     return filtered;
   }, [caughtIds, selectedGames]);
 
-  const getOriginMarks = useCallback(
-    (pokemonId: number): OriginMark[] => {
-      const homeMark: OriginMark = {
-        game: 'HOME',
-        caught: caughtIds.has(pokemonId),
-      };
-
-      const games = pokemonToGames.get(pokemonId);
-      if (!games) return [homeMark];
-
-      const gameMarks: OriginMark[] = games.map((game) => ({
-        game,
-        caught: caughtByGame.get(game)?.has(pokemonId) ?? false,
-      }));
-
-      return [homeMark, ...gameMarks];
-    },
-    [caughtIds, caughtByGame]
-  );
-
-  const handleToggleCaught = useCallback(
-    (pokemonId: number) => {
-      toggleHome.mutate({ pokemonId });
-    },
-    [toggleHome]
-  );
-
-  const handleViewPokemon = useCallback(
-    (pokemonId: number) => {
-      navigate(`/dex/national/${pokemonId}`);
-    },
-    [navigate]
-  );
-
   return (
     <NationalDexView
       pokemonIds={filteredPokemonIds}
       caughtIds={filteredCaughtIds}
       selectedGames={selectedGames}
       onToggleGame={handleToggleGame}
-      onPrimaryAction={handleToggleCaught}
-      onSecondaryAction={handleViewPokemon}
-      getOriginMarks={getOriginMarks}
     />
   );
 }
