@@ -103,8 +103,38 @@ export function DexGridView({
   }, []);
 
   const [searchQuery, setSearchQuery] = useState('');
-  const [hideCompleted, setHideCompleted] = useState(false);
-  const [showBoxView, setShowBoxView] = useState(false);
+  const [hideCompleted, setHideCompleted] = useState(() => {
+    try {
+      return localStorage.getItem('dex:hideCompleted') === 'true';
+    } catch {
+      return false;
+    }
+  });
+  const [showBoxView, setShowBoxView] = useState(() => {
+    try {
+      return localStorage.getItem('dex:showBoxView') === 'true';
+    } catch {
+      return false;
+    }
+  });
+
+  const handleHideCompletedChange = (value: boolean) => {
+    setHideCompleted(value);
+    try {
+      localStorage.setItem('dex:hideCompleted', String(value));
+    } catch {
+      // Ignore localStorage errors
+    }
+  };
+
+  const handleShowBoxViewChange = (value: boolean) => {
+    setShowBoxView(value);
+    try {
+      localStorage.setItem('dex:showBoxView', String(value));
+    } catch {
+      // Ignore localStorage errors
+    }
+  };
 
   const { filteredIds, dexNumberMap } = useDexFilter({
     pokemonIds,
@@ -119,11 +149,11 @@ export function DexGridView({
         searchQuery={searchQuery}
         onSearchChange={setSearchQuery}
         hideCompleted={hideCompleted}
-        onHideCompletedChange={setHideCompleted}
+        onHideCompletedChange={handleHideCompletedChange}
         filteredCount={filteredIds.length}
         totalCount={pokemonIds.length}
         showBoxView={showBoxView}
-        onShowBoxViewChange={setShowBoxView}
+        onShowBoxViewChange={handleShowBoxViewChange}
       />
       {showBoxView ? (
         <BoxView
