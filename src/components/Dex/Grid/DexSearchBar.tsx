@@ -38,7 +38,7 @@ export const DexSearchBar = ({
             value={searchQuery}
             onChange={(e) => onSearchChange(e.target.value)}
             placeholder="Search by name or number"
-            className="w-full pl-9 pr-9 py-2 rounded-lg bg-surface text-text text-sm border border-surface-hover placeholder:text-text-muted/50 focus:outline-none focus:border-primary"
+            className="w-full pl-9 pr-9 py-2 rounded-lg bg-surface text-text text-sm border border-surface-hover placeholder:text-text-muted/50 focus:outline-none focus:border-primary shadow-lg shadow-black/30"
           />
           {searchQuery.length > 0 && (
             <button
@@ -52,9 +52,9 @@ export const DexSearchBar = ({
         </div>
         <button
           onClick={() => onHideCompletedChange(!hideCompleted)}
-          title="Hide completed"
-          aria-label="Hide completed"
-          className={`flex-shrink-0 p-2 rounded-lg border transition-colors cursor-pointer ${
+          title="Toggle hide completed"
+          aria-label="Toggle hide completed"
+          className={`flex-shrink-0 p-2 rounded-lg border transition-colors cursor-pointer shadow-lg shadow-black/30 ${
             hideCompleted
               ? 'bg-primary border-primary text-white'
               : 'bg-surface border-surface-hover text-text-muted/50 hover:text-text-muted'
@@ -64,9 +64,9 @@ export const DexSearchBar = ({
         </button>
         <button
           onClick={() => onShowBoxViewChange(!showBoxView)}
-          title="Box view"
-          aria-label="Box view"
-          className={`flex-shrink-0 p-2 rounded-lg border transition-colors cursor-pointer ${
+          title="Toggle box view"
+          aria-label="Toggle box view"
+          className={`flex-shrink-0 p-2 rounded-lg border transition-colors cursor-pointer shadow-lg shadow-black/30 ${
             showBoxView
               ? 'bg-primary border-primary text-white'
               : 'bg-surface border-surface-hover text-text-muted/50 hover:text-text-muted'

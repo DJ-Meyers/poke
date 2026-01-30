@@ -61,7 +61,9 @@ describe('DexGridView empty state', () => {
       <DexGridView {...defaultProps} caughtIds={new Set([1, 4, 25, 94])} />
     );
 
-    const hideButton = screen.getByRole('button', { name: 'Hide completed' });
+    const hideButton = screen.getByRole('button', {
+      name: 'Toggle hide completed',
+    });
     await user.click(hideButton);
 
     expect(
@@ -74,7 +76,9 @@ describe('DexGridView empty state', () => {
     render(<DexGridView {...defaultProps} caughtIds={new Set([1])} />);
 
     // Enable hide completed
-    const hideButton = screen.getByRole('button', { name: 'Hide completed' });
+    const hideButton = screen.getByRole('button', {
+      name: 'Toggle hide completed',
+    });
     await user.click(hideButton);
 
     // Type a search that matches nothing
@@ -99,7 +103,9 @@ describe('DexGridView box view toggle', () => {
     const user = userEvent.setup();
     render(<DexGridView {...defaultProps} />);
 
-    const boxViewButton = screen.getByRole('button', { name: 'Box view' });
+    const boxViewButton = screen.getByRole('button', {
+      name: 'Toggle box view',
+    });
     await user.click(boxViewButton);
 
     expect(screen.getByTestId('box-view')).toBeInTheDocument();
@@ -109,7 +115,9 @@ describe('DexGridView box view toggle', () => {
     const user = userEvent.setup();
     render(<DexGridView {...defaultProps} />);
 
-    const boxViewButton = screen.getByRole('button', { name: 'Box view' });
+    const boxViewButton = screen.getByRole('button', {
+      name: 'Toggle box view',
+    });
     await user.click(boxViewButton);
     expect(screen.getByTestId('box-view')).toBeInTheDocument();
 
@@ -123,7 +131,9 @@ describe('DexGridView localStorage persistence', () => {
     const user = userEvent.setup();
     render(<DexGridView {...defaultProps} />);
 
-    const hideButton = screen.getByRole('button', { name: 'Hide completed' });
+    const hideButton = screen.getByRole('button', {
+      name: 'Toggle hide completed',
+    });
     await user.click(hideButton);
 
     expect(localStorage.getItem('dex:hideCompleted')).toBe('true');
@@ -133,7 +143,9 @@ describe('DexGridView localStorage persistence', () => {
     const user = userEvent.setup();
     render(<DexGridView {...defaultProps} />);
 
-    const boxViewButton = screen.getByRole('button', { name: 'Box view' });
+    const boxViewButton = screen.getByRole('button', {
+      name: 'Toggle box view',
+    });
     await user.click(boxViewButton);
 
     expect(localStorage.getItem('dex:showBoxView')).toBe('true');
@@ -175,7 +187,9 @@ describe('DexGridView localStorage persistence', () => {
 
     render(<DexGridView {...defaultProps} />);
 
-    const boxViewButton = screen.getByRole('button', { name: 'Box view' });
+    const boxViewButton = screen.getByRole('button', {
+      name: 'Toggle box view',
+    });
     await user.click(boxViewButton);
 
     expect(localStorage.getItem('dex:showBoxView')).toBe('false');
