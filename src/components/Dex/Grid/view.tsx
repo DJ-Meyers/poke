@@ -12,6 +12,7 @@ import { DexEntry } from '~/components/Dex/Entry';
 import type { OriginMark } from '~/components/Dex/Entry/origin-marks';
 import { DexSearchBar } from './DexSearchBar';
 import { useDexFilter } from './use-dex-filter';
+import { BoxView } from './BoxView';
 
 interface DexGridViewProps {
   pokemonIds: number[];
@@ -19,6 +20,8 @@ interface DexGridViewProps {
   onPrimaryAction?: (pokemonId: number) => void;
   onSecondaryAction?: (pokemonId: number) => void;
   getOriginMarks?: (pokemonId: number) => OriginMark[];
+  /** When true, box view breaks at generation boundaries (for National Dex) */
+  isNationalDex?: boolean;
 }
 
 /** Pulse placeholder that mirrors DexEntryView's layout to prevent shift. */
@@ -92,6 +95,7 @@ export function DexGridView({
   onPrimaryAction,
   onSecondaryAction,
   getOriginMarks,
+  isNationalDex = false,
 }: DexGridViewProps) {
   const [scrollParent, setScrollParent] = useState<HTMLElement | null>(null);
   const containerRef = useCallback((node: HTMLDivElement | null) => {
@@ -99,7 +103,38 @@ export function DexGridView({
   }, []);
 
   const [searchQuery, setSearchQuery] = useState('');
-  const [hideCompleted, setHideCompleted] = useState(false);
+  const [hideCompleted, setHideCompleted] = useState(() => {
+    try {
+      return localStorage.getItem('dex:hideCompleted') === 'true';
+    } catch {
+      return false;
+    }
+  });
+  const [showBoxView, setShowBoxView] = useState(() => {
+    try {
+      return localStorage.getItem('dex:showBoxView') === 'true';
+    } catch {
+      return false;
+    }
+  });
+
+  const handleHideCompletedChange = (value: boolean) => {
+    setHideCompleted(value);
+    try {
+      localStorage.setItem('dex:hideCompleted', String(value));
+    } catch {
+      // Ignore localStorage errors
+    }
+  };
+
+  const handleShowBoxViewChange = (value: boolean) => {
+    setShowBoxView(value);
+    try {
+      localStorage.setItem('dex:showBoxView', String(value));
+    } catch {
+      // Ignore localStorage errors
+    }
+  };
 
   const { filteredIds, dexNumberMap } = useDexFilter({
     pokemonIds,
@@ -114,11 +149,25 @@ export function DexGridView({
         searchQuery={searchQuery}
         onSearchChange={setSearchQuery}
         hideCompleted={hideCompleted}
-        onHideCompletedChange={setHideCompleted}
+        onHideCompletedChange={handleHideCompletedChange}
         filteredCount={filteredIds.length}
         totalCount={pokemonIds.length}
+        showBoxView={showBoxView}
+        onShowBoxViewChange={handleShowBoxViewChange}
       />
-      {filteredIds.length === 0 && (searchQuery.length > 0 || hideCompleted) ? (
+      {showBoxView ? (
+        <BoxView
+          pokemonIds={pokemonIds}
+          filteredIds={new Set(filteredIds)}
+          dexNumberMap={dexNumberMap}
+          caughtIds={caughtIds}
+          onPrimaryAction={onPrimaryAction}
+          onSecondaryAction={onSecondaryAction}
+          getOriginMarks={getOriginMarks}
+          respectGenerationBoundaries={isNationalDex}
+        />
+      ) : filteredIds.length === 0 &&
+        (searchQuery.length > 0 || hideCompleted) ? (
         <p className="text-text-muted text-sm text-center pt-12">
           {searchQuery.length > 0
             ? 'No Pokemon found matching your search'
