@@ -10,12 +10,12 @@ interface BoxViewProps {
   respectGenerationBoundaries?: boolean;
 }
 
-export function BoxView({
+export const BoxView = ({
   pokemonIds,
   filteredIds,
   gameDex,
   respectGenerationBoundaries = false,
-}: BoxViewProps) {
+}: BoxViewProps) => {
   const boxes = calculateBoxes(pokemonIds, respectGenerationBoundaries);
 
   return (
@@ -56,4 +56,4 @@ export function BoxView({
       })}
     </div>
   );
-}
+};

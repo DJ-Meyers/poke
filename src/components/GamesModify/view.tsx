@@ -27,12 +27,12 @@ interface GameCardProps {
   onSecondaryAction: () => void;
 }
 
-function GameCard({
+const GameCard = ({
   game,
   isSelected,
   onPrimaryAction,
   onSecondaryAction,
-}: GameCardProps) {
+}: GameCardProps) => {
   const coverImage = GAME_COVERS[game.game];
   const { onMobilePressAndHold, onRightClick } =
     useSecondaryActionHandlers(onSecondaryAction);
@@ -82,7 +82,7 @@ function GameCard({
       </div>
     </button>
   );
-}
+};
 
 interface GamesModifyViewProps {
   games: GameInfo[];
@@ -92,13 +92,13 @@ interface GamesModifyViewProps {
   onSecondaryAction: (game: Game) => void;
 }
 
-export function GamesModifyView({
+export const GamesModifyView = ({
   games,
   selectedGames,
   onPrimaryAction,
   onToggleAll,
   onSecondaryAction,
-}: GamesModifyViewProps) {
+}: GamesModifyViewProps) => {
   const reversedGames = [...games].reverse();
   const allSelected = selectedGames.size === games.length;
 
@@ -135,4 +135,4 @@ export function GamesModifyView({
       <Outlet />
     </AppLayout>
   );
-}
+};

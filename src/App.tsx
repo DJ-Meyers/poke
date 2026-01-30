@@ -3,12 +3,12 @@ import { RouterProvider } from 'react-router';
 import { queryClient } from '~/data/query-client';
 import { router } from './router';
 
-function App() {
+const App = () => {
   return (
     <QueryClientProvider client={queryClient}>
       <RouterProvider router={router} />
     </QueryClientProvider>
   );
-}
+};
 
 export default App;

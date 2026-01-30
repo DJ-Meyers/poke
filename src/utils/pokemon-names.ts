@@ -1043,6 +1043,6 @@ export const POKEMON_NAMES: string[] = [
 ];
 
 /** Returns the name of a Pokemon by its national dex ID (1-indexed). */
-export function getPokemonName(id: number): string {
+export const getPokemonName = (id: number): string => {
   return POKEMON_NAMES[id - 1] ?? '';
-}
+};

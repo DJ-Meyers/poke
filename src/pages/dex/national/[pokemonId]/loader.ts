@@ -10,9 +10,9 @@ import {
   prefetchGetPokemonSpeciesById,
 } from '~/data/pokemon';
 
-export async function nationalDexEntryDetailLoader({
+export const nationalDexEntryDetailLoader = async ({
   params,
-}: LoaderFunctionArgs) {
+}: LoaderFunctionArgs) => {
   const { pokemonId: pokemonIdParam } = params;
 
   const parsed = pokemonIdParam ? parseInt(pokemonIdParam, 10) : NaN;
@@ -37,4 +37,4 @@ export async function nationalDexEntryDetailLoader({
   prefetchGetPokemonSpeciesById({ id: parsed });
 
   return null;
-}
+};

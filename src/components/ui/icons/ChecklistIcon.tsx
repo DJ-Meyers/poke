@@ -2,7 +2,7 @@ interface ChecklistIconProps {
   className?: string;
 }
 
-export function ChecklistIcon({ className }: ChecklistIconProps) {
+export const ChecklistIcon = ({ className }: ChecklistIconProps) => {
   return (
     <svg
       className={className}
@@ -21,4 +21,4 @@ export function ChecklistIcon({ className }: ChecklistIconProps) {
       <line x1="12" y1="19" x2="20" y2="19" />
     </svg>
   );
-}
+};

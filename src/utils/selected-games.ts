@@ -10,7 +10,7 @@ const STORAGE_KEY = 'selected_games';
  * Returns the list of games the user has selected to track.
  * Defaults to all games if none are selected.
  */
-export function getSelectedGames(): Game[] {
+export const getSelectedGames = (): Game[] => {
   const stored = localStorage.getItem(STORAGE_KEY);
 
   if (!stored) {
@@ -28,27 +28,27 @@ export function getSelectedGames(): Game[] {
   } catch {
     return getAllGames();
   }
-}
+};
 
 /**
  * Checks if a specific game is selected.
  */
-export function isGameSelected({ game }: { game: Game }): boolean {
+export const isGameSelected = ({ game }: { game: Game }): boolean => {
   return getSelectedGames().includes(game);
-}
+};
 
 /**
  * Sets the list of selected games.
  */
-export function setSelectedGames({ games }: { games: Game[] }): void {
+export const setSelectedGames = ({ games }: { games: Game[] }): void => {
   localStorage.setItem(STORAGE_KEY, JSON.stringify(games));
-}
+};
 
 /**
  * Toggles a game's selection status.
  * Returns the new selection status.
  */
-export function toggleGameSelection({ game }: { game: Game }): boolean {
+export const toggleGameSelection = ({ game }: { game: Game }): boolean => {
   const selected = getSelectedGames();
   const index = selected.indexOf(game);
 
@@ -61,4 +61,4 @@ export function toggleGameSelection({ game }: { game: Game }): boolean {
     setSelectedGames({ games: selected });
     return false;
   }
-}
+};

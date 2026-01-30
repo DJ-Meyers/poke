@@ -37,14 +37,14 @@ export const dexProgressKeys = {
 
 // --- Query option factories (internal) ---
 
-function gameProgressOptions({ game }: { game: Game }) {
+const gameProgressOptions = ({ game }: { game: Game }) => {
   return queryOptions({
     queryKey: dexProgressKeys.gameProgress(game),
     queryFn: () => getProgressForGame({ game }),
   });
-}
+};
 
-function dexProgressInfoOptions({ game }: { game: Game }) {
+const dexProgressInfoOptions = ({ game }: { game: Game }) => {
   return queryOptions({
     queryKey: dexProgressKeys.gameInfo(game),
     queryFn: () => {
@@ -52,7 +52,7 @@ function dexProgressInfoOptions({ game }: { game: Game }) {
       return buildDexProgressInfo({ dexes });
     },
   });
-}
+};
 
 export interface GameProgressInfo {
   game: Game;
@@ -61,7 +61,7 @@ export interface GameProgressInfo {
   totalCount: number;
 }
 
-function allGamesProgressOptions() {
+const allGamesProgressOptions = () => {
   return queryOptions({
     queryKey: dexProgressKeys.allGames,
     queryFn: () => {
@@ -83,7 +83,7 @@ function allGamesProgressOptions() {
       return { games, nationalDexProgress };
     },
   });
-}
+};
 
 export interface AllDexProgressData {
   /** Caught IDs indexed by GameDex (including NATIONAL). */
@@ -92,7 +92,7 @@ export interface AllDexProgressData {
   caughtIdsByGame: Record<DexSource, Set<number>>;
 }
 
-function allDexProgressOptions() {
+const allDexProgressOptions = () => {
   return queryOptions({
     queryKey: [...dexProgressKeys.all, 'all-dex'] as const,
     queryFn: (): AllDexProgressData => {
@@ -123,7 +123,7 @@ function allDexProgressOptions() {
       };
     },
   });
-}
+};
 
 // --- Hooks (for components) ---
 
@@ -140,28 +140,28 @@ const EMPTY_BY_GAME: Record<DexSource, Set<number>> = {} as Record<
  * - caughtIdsByDex: indexed by GameDex enum values
  * - caughtIdsByGame: indexed by Game enum values (plus 'HOME')
  */
-export function useDexProgress(): AllDexProgressData {
+export const useDexProgress = (): AllDexProgressData => {
   const { data } = useQuery(allDexProgressOptions());
   return {
     caughtIdsByDex: data?.caughtIdsByDex ?? EMPTY_BY_DEX,
     caughtIdsByGame: data?.caughtIdsByGame ?? EMPTY_BY_GAME,
   };
-}
+};
 
-export function useGameProgress({ game }: { game: Game }) {
+export const useGameProgress = ({ game }: { game: Game }) => {
   const { data } = useQuery(gameProgressOptions({ game }));
   return {
     caughtCount: data?.caughtCount ?? 0,
     totalCount: data?.totalCount ?? 0,
   };
-}
+};
 
-export function useDexProgressInfo({ game }: { game: Game }) {
+export const useDexProgressInfo = ({ game }: { game: Game }) => {
   const { data } = useQuery(dexProgressInfoOptions({ game }));
   return { dexProgressInfo: data ?? [] };
-}
+};
 
-export function useAllGamesProgress() {
+export const useAllGamesProgress = () => {
   const { data } = useQuery(allGamesProgressOptions());
   return {
     games: data?.games ?? [],
@@ -170,7 +170,7 @@ export function useAllGamesProgress() {
       totalCount: 0,
     },
   };
-}
+};
 
 // --- Mutations ---
 
@@ -178,7 +178,7 @@ export function useAllGamesProgress() {
  * Toggle caught status for any dex, including NATIONAL.
  * For NATIONAL, toggles the HOME storage. For regular dexes, toggles the dex-specific storage.
  */
-export function useToggleDexCaught() {
+export const useToggleDexCaught = () => {
   return useMutation({
     mutationFn: ({
       gameDex,
@@ -198,9 +198,9 @@ export function useToggleDexCaught() {
       queryClient.invalidateQueries({ queryKey: dexProgressKeys.all });
     },
   });
-}
+};
 
-export function useCompleteDex() {
+export const useCompleteDex = () => {
   return useMutation({
     mutationFn: ({ gameDex }: { gameDex: GameDex }) => {
       markAllCaughtForDex({ gameDex });
@@ -210,9 +210,9 @@ export function useCompleteDex() {
       queryClient.invalidateQueries({ queryKey: dexProgressKeys.all });
     },
   });
-}
+};
 
-export function useResetDex() {
+export const useResetDex = () => {
   return useMutation({
     mutationFn: ({ gameDex }: { gameDex: GameDex }) => {
       resetProgressForDex({ gameDex });
@@ -222,6 +222,6 @@ export function useResetDex() {
       queryClient.invalidateQueries({ queryKey: dexProgressKeys.all });
     },
   });
-}
+};
 
 export type { DexProgressInfo, DexSource };

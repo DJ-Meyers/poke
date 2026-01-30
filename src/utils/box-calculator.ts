@@ -3,14 +3,14 @@ const BOX_SIZE = 30;
 // Generation boundaries by national dex number (last Pokemon of each gen)
 const GENERATION_BOUNDARIES = [151, 251, 386, 493, 649, 721, 809, 905, 1025];
 
-function getGeneration(nationalDexId: number): number {
+const getGeneration = (nationalDexId: number): number => {
   for (let i = 0; i < GENERATION_BOUNDARIES.length; i++) {
     if (nationalDexId <= GENERATION_BOUNDARIES[i]) {
       return i + 1;
     }
   }
   return GENERATION_BOUNDARIES.length + 1;
-}
+};
 
 export interface Box {
   boxNumber: number;
@@ -20,10 +20,10 @@ export interface Box {
 }
 
 /** Calculate boxes from the full list of Pokemon IDs (unfiltered). */
-export function calculateBoxes(
+export const calculateBoxes = (
   pokemonIds: number[],
   respectGenerationBoundaries: boolean
-): Box[] {
+): Box[] => {
   if (pokemonIds.length === 0) return [];
 
   const boxes: Box[] = [];
@@ -70,4 +70,4 @@ export function calculateBoxes(
   }
 
   return boxes;
-}
+};

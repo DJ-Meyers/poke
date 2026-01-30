@@ -1,5 +1,5 @@
 import { GamesModify } from '~/components/GamesModify';
 
-export function GamesModifyPage() {
+export const GamesModifyPage = () => {
   return <GamesModify />;
-}
+};

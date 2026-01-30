@@ -25,17 +25,17 @@ export interface DexPokemonIdentifier extends DexProgressIdentifier {
 
 const STORAGE_KEY_PREFIX = 'dex';
 
-function buildStorageKey({ gameDex }: DexProgressIdentifier): string {
+const buildStorageKey = ({ gameDex }: DexProgressIdentifier): string => {
   return `${STORAGE_KEY_PREFIX}:${gameDex}`;
-}
+};
 
 /**
  * Retrieves the list of caught Pokémon IDs for a given dex.
  * Returns an empty array if no progress exists.
  */
-export function getProgressForDex({
+export const getProgressForDex = ({
   gameDex,
-}: DexProgressIdentifier): number[] {
+}: DexProgressIdentifier): number[] => {
   const key = buildStorageKey({ gameDex });
   const stored = localStorage.getItem(key);
 
@@ -52,27 +52,27 @@ export function getProgressForDex({
   } catch {
     return [];
   }
-}
+};
 
 /**
  * Checks if a specific Pokémon has been caught in the given dex.
  */
-export function getIsCaughtForDex({
+export const getIsCaughtForDex = ({
   gameDex,
   pokemonId,
-}: DexPokemonIdentifier): boolean {
+}: DexPokemonIdentifier): boolean => {
   const progress = getProgressForDex({ gameDex });
   return progress.includes(pokemonId);
-}
+};
 
 /**
  * Marks a Pokémon as caught in the given dex.
  * Maintains a sorted array for efficient storage and lookup.
  */
-export function markCaughtForDex({
+export const markCaughtForDex = ({
   gameDex,
   pokemonId,
-}: DexPokemonIdentifier): void {
+}: DexPokemonIdentifier): void => {
   const progress = getProgressForDex({ gameDex });
 
   if (progress.includes(pokemonId)) {
@@ -84,15 +84,15 @@ export function markCaughtForDex({
 
   const key = buildStorageKey({ gameDex });
   localStorage.setItem(key, JSON.stringify(progress));
-}
+};
 
 /**
  * Marks a Pokémon as not caught in the given dex.
  */
-export function markUncaughtForDex({
+export const markUncaughtForDex = ({
   gameDex,
   pokemonId,
-}: DexPokemonIdentifier): void {
+}: DexPokemonIdentifier): void => {
   const progress = getProgressForDex({ gameDex });
   const index = progress.indexOf(pokemonId);
 
@@ -104,16 +104,16 @@ export function markUncaughtForDex({
 
   const key = buildStorageKey({ gameDex });
   localStorage.setItem(key, JSON.stringify(progress));
-}
+};
 
 /**
  * Toggles the caught status of a Pokémon in the given dex.
  * Returns the new caught status.
  */
-export function toggleCaughtForDex({
+export const toggleCaughtForDex = ({
   gameDex,
   pokemonId,
-}: DexPokemonIdentifier): boolean {
+}: DexPokemonIdentifier): boolean => {
   if (getIsCaughtForDex({ gameDex, pokemonId })) {
     markUncaughtForDex({ gameDex, pokemonId });
     return false;
@@ -121,42 +121,50 @@ export function toggleCaughtForDex({
     markCaughtForDex({ gameDex, pokemonId });
     return true;
   }
-}
+};
 
 /**
  * Marks all Pokémon in the dex as caught.
  */
-export function markAllCaughtForDex({ gameDex }: DexProgressIdentifier): void {
+export const markAllCaughtForDex = ({
+  gameDex,
+}: DexProgressIdentifier): void => {
   const pokemonIds = getPokemonIdsForDex({ gameDex });
   const key = buildStorageKey({ gameDex });
   localStorage.setItem(key, JSON.stringify(pokemonIds));
-}
+};
 
 /**
  * Resets all progress for a given dex.
  */
-export function resetProgressForDex({ gameDex }: DexProgressIdentifier): void {
+export const resetProgressForDex = ({
+  gameDex,
+}: DexProgressIdentifier): void => {
   const key = buildStorageKey({ gameDex });
   localStorage.removeItem(key);
-}
+};
 
 /**
  * Returns the count of caught Pokémon for a given dex.
  */
-export function getCaughtCountForDex({
+export const getCaughtCountForDex = ({
   gameDex,
-}: DexProgressIdentifier): number {
+}: DexProgressIdentifier): number => {
   return getProgressForDex({ gameDex }).length;
-}
+};
 
 /**
  * Returns the total progress for all dexes in a game.
  * Counts UNIQUE Pokémon - if a Pokémon appears in multiple dexes, it's only counted once.
  */
-export function getProgressForGame({ game }: { game: Game }): {
+export const getProgressForGame = ({
+  game,
+}: {
+  game: Game;
+}): {
   caughtCount: number;
   totalCount: number;
-} {
+} => {
   const dexes = getDexesForGame({ game });
   const uniquePokemonIds = new Set<number>();
   const uniqueCaughtIds = new Set<number>();
@@ -180,16 +188,16 @@ export function getProgressForGame({ game }: { game: Game }): {
     caughtCount: uniqueCaughtIds.size,
     totalCount: uniquePokemonIds.size,
   };
-}
+};
 
 /**
  * Returns the total progress across all games (National Dex).
  * Total is always 1025 (all Pokémon). Caught count is unique across all game dexes.
  */
-export function getNationalDexProgress(): {
+export const getNationalDexProgress = (): {
   caughtCount: number;
   totalCount: number;
-} {
+} => {
   const allDexes = Object.values(GameDex) as GameDex[];
   const uniqueCaughtIds = new Set<number>();
 
@@ -205,7 +213,7 @@ export function getNationalDexProgress(): {
     caughtCount: uniqueCaughtIds.size,
     totalCount: NATIONAL_DEX_TOTAL,
   };
-}
+};
 
 /**
  * Progress info for a single dex, used for UI display.
@@ -221,11 +229,11 @@ export interface DexProgressInfo {
  * Builds progress info for multiple dexes.
  * Useful for displaying dex selection with progress bars.
  */
-export function buildDexProgressInfo({
+export const buildDexProgressInfo = ({
   dexes,
 }: {
   dexes: GameDex[];
-}): DexProgressInfo[] {
+}): DexProgressInfo[] => {
   return dexes.map((gameDex) => {
     const dexInfo = getDexInfo({ gameDex });
     const progress = getProgressForDex({ gameDex });
@@ -236,7 +244,7 @@ export function buildDexProgressInfo({
       totalCount: dexInfo.pokemonIds.length,
     };
   });
-}
+};
 
 // Re-export types and enums for convenience
 export { GameDex };

@@ -17,35 +17,35 @@ interface DexEntryViewProps {
  * Returns the sprite URL for a Pokemon.
  * Prefers the official artwork, falls back to front_default sprite.
  */
-function getSpriteUrl(pokemon: Pokemon): string {
+const getSpriteUrl = (pokemon: Pokemon): string => {
   const officialArtwork =
     pokemon.sprites.other?.['official-artwork']?.front_default;
   if (officialArtwork) {
     return officialArtwork;
   }
   return pokemon.sprites.front_default ?? '';
-}
+};
 
 /**
  * Extracts type names from a Pokemon's types array.
  */
-function getTypeNames(pokemon: Pokemon): string[] {
+const getTypeNames = (pokemon: Pokemon): string[] => {
   return pokemon.types.sort((a, b) => a.slot - b.slot).map((t) => t.type.name);
-}
+};
 
 /**
  * Returns the CSS variable for a type color.
  */
-function typeColor(type: string): string {
+const typeColor = (type: string): string => {
   return `var(--color-type-${type})`;
-}
+};
 
 /**
  * Returns the background style based on Pokemon types.
  * Single type: solid color
  * Dual type: gradient between the two colors
  */
-function getTypeBackground(types: string[]): React.CSSProperties {
+const getTypeBackground = (types: string[]): React.CSSProperties => {
   if (types.length === 1) {
     return { backgroundColor: typeColor(types[0]) };
   }
@@ -53,40 +53,40 @@ function getTypeBackground(types: string[]): React.CSSProperties {
   return {
     background: `linear-gradient(135deg, ${typeColor(types[0])} 0%, ${typeColor(types[1])} 100%)`,
   };
-}
+};
 
 /**
  * Capitalizes the first letter of a Pokemon name.
  */
-function formatName(name: string): string {
+const formatName = (name: string): string => {
   return name.charAt(0).toUpperCase() + name.slice(1);
-}
+};
 
 /**
  * Formats the dex number display.
  * If regionalDexNumber is provided, shows "#{regional} / #{national}"
  * Otherwise shows only "#{national}"
  */
-function formatDexNumber(
+const formatDexNumber = (
   nationalId: number,
   regionalDexNumber?: number
-): string {
+): string => {
   const nationalStr = `#${nationalId.toString().padStart(4, '0')}`;
   if (regionalDexNumber !== undefined) {
     const regionalStr = `#${regionalDexNumber.toString().padStart(3, '0')}`;
     return `${regionalStr} / ${nationalStr}`;
   }
   return nationalStr;
-}
+};
 
-export function DexEntryView({
+export const DexEntryView = ({
   pokemon,
   isComplete,
   onPrimaryAction,
   onSecondaryAction,
   regionalDexNumber,
   originMarks,
-}: DexEntryViewProps) {
+}: DexEntryViewProps) => {
   const types = getTypeNames(pokemon);
   const spriteUrl = getSpriteUrl(pokemon);
 
@@ -150,4 +150,4 @@ export function DexEntryView({
       )}
     </button>
   );
-}
+};

@@ -11,14 +11,14 @@ interface DexManageModalViewProps {
   onClose: () => void;
 }
 
-export function DexManageModalView({
+export const DexManageModalView = ({
   game,
   dexes,
   dexProgressInfo,
   onCompleteDex,
   onResetDex,
   onClose,
-}: DexManageModalViewProps) {
+}: DexManageModalViewProps) => {
   const progressMap = new Map(dexProgressInfo.map((d) => [d.gameDex, d]));
 
   return (
@@ -93,4 +93,4 @@ export function DexManageModalView({
       </div>
     </div>
   );
-}
+};

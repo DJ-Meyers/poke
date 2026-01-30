@@ -17,7 +17,7 @@ interface DexContainerProps {
  * Container for the full Dex page.
  * DexEntry components handle their own callbacks via useDexEntryCallbacks hook.
  */
-export function DexContainer({ game, currentDex }: DexContainerProps) {
+export const DexContainer = ({ game, currentDex }: DexContainerProps) => {
   const dexes = getDexesForGame({ game });
   const dexInfo = getDexInfo({ gameDex: currentDex });
   const { caughtIdsByDex } = useDexProgress();
@@ -38,4 +38,4 @@ export function DexContainer({ game, currentDex }: DexContainerProps) {
       />
     </DexView>
   );
-}
+};

@@ -6,7 +6,7 @@
 import { redirect, type LoaderFunctionArgs } from 'react-router';
 import { parseGameParam, getDefaultDexUrlId } from '~/utils/route-params';
 
-export function gameDexLoader({ params }: LoaderFunctionArgs): Response {
+export const gameDexLoader = ({ params }: LoaderFunctionArgs): Response => {
   const { gameId } = params;
 
   // Parse and validate game param
@@ -20,4 +20,4 @@ export function gameDexLoader({ params }: LoaderFunctionArgs): Response {
   // Always redirect to the default dex for consistent navigation
   const defaultDexUrl = getDefaultDexUrlId({ game });
   return redirect(`/dex/${gameId}/${defaultDexUrl}`);
-}
+};

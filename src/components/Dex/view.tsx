@@ -17,14 +17,14 @@ interface DexViewProps {
  * Layout component for a Dex page.
  * Renders navigation links between dexes and a progress summary above the grid.
  */
-export function DexView({
+export const DexView = ({
   game,
   dexes,
   currentDex,
   totalCount,
   caughtCount,
   children,
-}: DexViewProps) {
+}: DexViewProps) => {
   const subheader = dexes.map((dex) => {
     const isActive = currentDex === dex;
     return (
@@ -52,4 +52,4 @@ export function DexView({
       {children}
     </AppLayout>
   );
-}
+};

@@ -30,7 +30,7 @@ interface GameCardProps {
   onSecondaryAction: () => void;
 }
 
-function GameCard({ game, onSecondaryAction }: GameCardProps) {
+const GameCard = ({ game, onSecondaryAction }: GameCardProps) => {
   const coverImage = GAME_COVERS[game.game];
   const navigate = useNavigate();
   const { onMobilePressAndHold, onRightClick } =
@@ -83,7 +83,7 @@ function GameCard({ game, onSecondaryAction }: GameCardProps) {
       </div>
     </div>
   );
-}
+};
 
 interface GamesViewProps {
   games: GameProgressInfo[];
@@ -91,11 +91,11 @@ interface GamesViewProps {
   onGameSecondaryAction: (game: string) => void;
 }
 
-export function GamesView({
+export const GamesView = ({
   games,
   nationalDexProgress,
   onGameSecondaryAction,
-}: GamesViewProps) {
+}: GamesViewProps) => {
   const subheader = (
     <Link
       to="/dex/national"
@@ -138,4 +138,4 @@ export function GamesView({
       <Outlet />
     </AppLayout>
   );
-}
+};

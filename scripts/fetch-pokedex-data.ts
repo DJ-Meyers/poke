@@ -54,20 +54,20 @@ const GAME_CONFIGS: GameConfig[] = [
   },
 ];
 
-function extractPokemonId(url: string): number {
+const extractPokemonId = (url: string): number => {
   // URL format: https://pokeapi.co/api/v2/pokemon-species/{id}/
   const match = url.match(/\/pokemon-species\/(\d+)\//);
   if (!match) {
     throw new Error(`Could not extract pokemon ID from URL: ${url}`);
   }
   return parseInt(match[1], 10);
-}
+};
 
-async function fetchAndSavePokedex(
+const fetchAndSavePokedex = async (
   client: GameClient,
   gameAbbr: string,
   config: PokedexConfig
-): Promise<void> {
+): Promise<void> => {
   console.log(`Fetching ${config.apiName} for ${gameAbbr}...`);
 
   const pokedex = await client.getPokedexByName(config.apiName);
@@ -86,9 +86,9 @@ async function fetchAndSavePokedex(
   console.log(
     `  Saved ${pokemonIds.length} pokemon IDs to ${gameAbbr}/${config.fileName}`
   );
-}
+};
 
-async function main(): Promise<void> {
+const main = async (): Promise<void> => {
   const client = new GameClient();
 
   console.log('Fetching Pokedex data from PokeAPI...\n');
@@ -101,6 +101,6 @@ async function main(): Promise<void> {
   }
 
   console.log('Done!');
-}
+};
 
 main().catch(console.error);

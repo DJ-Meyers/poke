@@ -16,76 +16,76 @@ interface DexEntryDetailViewProps {
 /**
  * Returns the sprite URL for a Pokemon.
  */
-function getSpriteUrl(pokemon: Pokemon): string {
+const getSpriteUrl = (pokemon: Pokemon): string => {
   const officialArtwork =
     pokemon.sprites.other?.['official-artwork']?.front_default;
   if (officialArtwork) {
     return officialArtwork;
   }
   return pokemon.sprites.front_default ?? '';
-}
+};
 
 /**
  * Extracts type names from a Pokemon's types array.
  */
-function getTypeNames(pokemon: Pokemon): string[] {
+const getTypeNames = (pokemon: Pokemon): string[] => {
   return pokemon.types.sort((a, b) => a.slot - b.slot).map((t) => t.type.name);
-}
+};
 
 /**
  * Returns the CSS variable for a type color.
  */
-function typeColor(type: string): string {
+const typeColor = (type: string): string => {
   return `var(--color-type-${type})`;
-}
+};
 
 /**
  * Capitalizes the first letter of a string.
  */
-function capitalize(str: string): string {
+const capitalize = (str: string): string => {
   return str.charAt(0).toUpperCase() + str.slice(1);
-}
+};
 
 /**
  * Formats a Pokemon name for display.
  */
-function formatName(name: string): string {
+const formatName = (name: string): string => {
   return name
     .split('-')
     .map((part) => capitalize(part))
     .join(' ');
-}
+};
 
 /**
  * Returns the English genus from species data.
  */
-function getEnglishGenus(species: PokemonSpecies | null): string | null {
+const getEnglishGenus = (species: PokemonSpecies | null): string | null => {
   if (!species) return null;
 
   const entry = species.genera.find((g) => g.language.name === 'en');
   return entry?.genus ?? null;
-}
+};
 
 /**
  * Formats the dex number display.
  * Shows "#{regional} / #{national}"
  */
-function formatDexNumber(
+const formatDexNumber = (
   nationalId: number,
   regionalDexNumber: number
-): string {
+): string => {
   const nationalStr = `#${nationalId.toString().padStart(4, '0')}`;
   const regionalStr = `#${regionalDexNumber.toString().padStart(3, '0')}`;
   return `${regionalStr} / ${nationalStr}`;
-}
+};
 
-export function DexEntryDetailView({
+export const DexEntryDetailView = ({
   pokemon,
   species,
   game,
   gameDex,
   regionalDexNumber,
-}: DexEntryDetailViewProps) {
+}: DexEntryDetailViewProps) => {
   const types = getTypeNames(pokemon);
   const spriteUrl = getSpriteUrl(pokemon);
   const genus = getEnglishGenus(species);
@@ -142,4 +142,4 @@ export function DexEntryDetailView({
       </div>
     </AppLayout>
   );
-}
+};

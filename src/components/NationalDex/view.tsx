@@ -18,12 +18,12 @@ interface NationalDexViewProps {
   onToggleGame: (game: Game) => void;
 }
 
-export function NationalDexView({
+export const NationalDexView = ({
   pokemonIds,
   caughtIds,
   selectedGames,
   onToggleGame,
-}: NationalDexViewProps) {
+}: NationalDexViewProps) => {
   return (
     <AppLayout
       title="National Pokédex"
@@ -51,4 +51,4 @@ export function NationalDexView({
       />
     </AppLayout>
   );
-}
+};

@@ -7,7 +7,7 @@ import {
 } from '~/data/selected-games';
 import { GamesModifyView } from './view';
 
-export function GamesModifyContainer() {
+export const GamesModifyContainer = () => {
   const games = getAllGamesInfo();
   const { selectedGames } = useSelectedGames();
   const selectedGamesSet = new Set(selectedGames);
@@ -38,4 +38,4 @@ export function GamesModifyContainer() {
       onSecondaryAction={handleViewGame}
     />
   );
-}
+};

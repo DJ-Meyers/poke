@@ -18,14 +18,14 @@ interface HeaderProps {
 /**
  * A reusable header component with optional back button, title, and right content.
  */
-export function Header({
+export const Header = ({
   title,
   backTo,
   rightContent,
   subtitle,
   children,
   nav,
-}: HeaderProps) {
+}: HeaderProps) => {
   return (
     <header
       className={`sticky top-0 z-20 bg-surface shrink-0 shadow-md shadow-black/20 ${nav === undefined ? 'border-b border-surface-hover' : ''}`}
@@ -48,4 +48,4 @@ export function Header({
       )}
     </header>
   );
-}
+};

@@ -20,18 +20,20 @@ export { GameDex, Game, type DexDataEntry, type RegularGameDex };
  * Returns true if the given gameDex is the National Dex.
  * Acts as a type guard to narrow GameDex to 'NATIONAL'.
  */
-export function isNationalDex(
+export const isNationalDex = (
   gameDex: GameDex
-): gameDex is typeof GameDex.NATIONAL {
+): gameDex is typeof GameDex.NATIONAL => {
   return gameDex === GameDex.NATIONAL;
-}
+};
 
 /**
  * Type guard that narrows GameDex to RegularGameDex (excludes NATIONAL).
  */
-export function isRegularGameDex(gameDex: GameDex): gameDex is RegularGameDex {
+export const isRegularGameDex = (
+  gameDex: GameDex
+): gameDex is RegularGameDex => {
   return gameDex !== GameDex.NATIONAL;
-}
+};
 
 export interface DexInfo {
   gameDex: GameDex;
@@ -58,7 +60,7 @@ let pokemonIdsByDexCache: Record<GameDex, number[]> | null = null;
  * Use this instead of getPokemonIdsForDex when you need IDs for multiple dexes
  * or want to avoid repeated memoization in render loops.
  */
-export function getPokemonIdsByDex(): Record<GameDex, number[]> {
+export const getPokemonIdsByDex = (): Record<GameDex, number[]> => {
   if (!pokemonIdsByDexCache) {
     const result = {} as Record<GameDex, number[]>;
     for (const gameDex of Object.values(GameDex)) {
@@ -71,32 +73,32 @@ export function getPokemonIdsByDex(): Record<GameDex, number[]> {
     pokemonIdsByDexCache = result;
   }
   return pokemonIdsByDexCache;
-}
+};
 
 /**
  * Returns the list of Pokémon IDs for a given game dex.
  */
-export function getPokemonIdsForDex({
+export const getPokemonIdsForDex = ({
   gameDex,
 }: {
   gameDex: GameDex;
-}): number[] {
+}): number[] => {
   return getPokemonIdsByDex()[gameDex];
-}
+};
 
 /**
  * Returns the total number of Pokémon in a given dex.
  * Does not support NATIONAL - use getPokemonIdsForDex instead.
  */
-export function getDexSize({ gameDex }: { gameDex: GameDex }): number {
+export const getDexSize = ({ gameDex }: { gameDex: GameDex }): number => {
   return DEX_DATA[gameDex as RegularGameDex].pokemonIds.length;
-}
+};
 
 /**
  * Returns full info for a game dex.
  * Does not support NATIONAL - throws error if passed.
  */
-export function getDexInfo({ gameDex }: { gameDex: GameDex }): DexInfo {
+export const getDexInfo = ({ gameDex }: { gameDex: GameDex }): DexInfo => {
   if (isNationalDex(gameDex)) {
     throw new Error('getDexInfo does not support NATIONAL dex');
   }
@@ -108,94 +110,98 @@ export function getDexInfo({ gameDex }: { gameDex: GameDex }): DexInfo {
     dexDisplayName: data.dexDisplayName,
     pokemonIds: data.pokemonIds,
   };
-}
+};
 
 /**
  * Returns all available games.
  */
-export function getAllGames(): Game[] {
+export const getAllGames = (): Game[] => {
   return Object.values(Game);
-}
+};
 
 /**
  * Returns all game dexes.
  */
-export function getAllGameDexes(): GameDex[] {
+export const getAllGameDexes = (): GameDex[] => {
   return Object.values(GameDex);
-}
+};
 
 /**
  * Returns all dexes for a given game.
  */
-export function getDexesForGame({ game }: { game: Game }): RegularGameDex[] {
+export const getDexesForGame = ({ game }: { game: Game }): RegularGameDex[] => {
   return GAME_DEXES[game];
-}
+};
 
 /**
  * Returns the default dex for a game (first dex).
  */
-export function getDefaultDex({ game }: { game: Game }): RegularGameDex {
+export const getDefaultDex = ({ game }: { game: Game }): RegularGameDex => {
   return GAME_DEXES[game][0];
-}
+};
 
 /**
  * Returns the game for a given game dex.
  * Does not support NATIONAL - throws error if passed.
  */
-export function getGameForDex({ gameDex }: { gameDex: GameDex }): Game {
+export const getGameForDex = ({ gameDex }: { gameDex: GameDex }): Game => {
   if (isNationalDex(gameDex)) {
     throw new Error('getGameForDex does not support NATIONAL dex');
   }
   return DEX_DATA[gameDex as RegularGameDex].game;
-}
+};
 
 /**
  * Returns full game info including all dexes.
  */
-export function getGameInfo({ game }: { game: Game }): GameInfo {
+export const getGameInfo = ({ game }: { game: Game }): GameInfo => {
   const firstDex = GAME_DEXES[game][0];
   return {
     game,
     displayName: DEX_DATA[firstDex].gameDisplayName,
     dexes: GAME_DEXES[game],
   };
-}
+};
 
 /**
  * Returns info for all games.
  */
-export function getAllGamesInfo(): GameInfo[] {
+export const getAllGamesInfo = (): GameInfo[] => {
   return getAllGames().map((game) => getGameInfo({ game }));
-}
+};
 
 /**
  * Returns the display name for a game.
  */
-export function getGameDisplayName({ game }: { game: Game }): string {
+export const getGameDisplayName = ({ game }: { game: Game }): string => {
   const firstDex = GAME_DEXES[game][0];
   return DEX_DATA[firstDex].gameDisplayName;
-}
+};
 
 /**
  * Returns the display name for a dex.
  * Does not support NATIONAL - throws error if passed.
  */
-export function getDexDisplayName({ gameDex }: { gameDex: GameDex }): string {
+export const getDexDisplayName = ({
+  gameDex,
+}: {
+  gameDex: GameDex;
+}): string => {
   if (isNationalDex(gameDex)) {
     throw new Error('getDexDisplayName does not support NATIONAL dex');
   }
   return DEX_DATA[gameDex as RegularGameDex].dexDisplayName;
-}
+};
 
 /**
  * Returns a formatted label combining game abbreviation and dex name.
  * Example: "SV • Paldea Dex"
  * Does not support NATIONAL - throws error if passed.
  */
-export function getDexLabel({ gameDex }: { gameDex: GameDex }): string {
+export const getDexLabel = ({ gameDex }: { gameDex: GameDex }): string => {
   if (isNationalDex(gameDex)) {
     throw new Error('getDexLabel does not support NATIONAL dex');
   }
   const data = DEX_DATA[gameDex as RegularGameDex];
   return `${data.game} • ${data.dexDisplayName}`;
-}
+};

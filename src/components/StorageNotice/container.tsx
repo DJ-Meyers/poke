@@ -4,7 +4,7 @@ import {
 } from '~/data/storage-notice';
 import { StorageNoticeView } from './view';
 
-export function StorageNoticeContainer() {
+export const StorageNoticeContainer = () => {
   const { isDismissed } = useIsStorageNoticeDismissed();
   const dismiss = useDismissStorageNotice();
 
@@ -17,4 +17,4 @@ export function StorageNoticeContainer() {
   }
 
   return <StorageNoticeView onDismiss={handleDismiss} />;
-}
+};

@@ -9,7 +9,7 @@ interface DexGridContainerProps {
 /**
  * Container that manages Pokemon caught state for the grid view.
  */
-export function DexGridContainer({ gameDex }: DexGridContainerProps) {
+export const DexGridContainer = ({ gameDex }: DexGridContainerProps) => {
   const dexInfo = getDexInfo({ gameDex });
   const { caughtIdsByDex } = useDexProgress();
 
@@ -20,4 +20,4 @@ export function DexGridContainer({ gameDex }: DexGridContainerProps) {
       gameDex={gameDex}
     />
   );
-}
+};

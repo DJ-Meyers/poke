@@ -11,12 +11,12 @@ export const DITTO: Pokemon = dittoData as Pokemon;
  * Creates a mock Pokemon by overriding specific fields from Ditto's data.
  * This ensures the mock has all required fields while allowing customization.
  */
-export function createMockPokemon(overrides: {
+export const createMockPokemon = (overrides: {
   id: number;
   name: string;
   types: string[];
   spriteUrl?: string;
-}): Pokemon {
+}): Pokemon => {
   const { id, name, types, spriteUrl } = overrides;
 
   const defaultSpriteUrl = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${id}.png`;
@@ -44,7 +44,7 @@ export function createMockPokemon(overrides: {
         : undefined,
     },
   };
-}
+};
 
 // Pre-made mock Pokemon for common test cases
 export const MOCK_POKEMON = {

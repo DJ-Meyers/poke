@@ -8,7 +8,7 @@ interface ProgressBarProps {
 /**
  * A reusable progress bar component.
  */
-export function ProgressBar({ value, max }: ProgressBarProps) {
+export const ProgressBar = ({ value, max }: ProgressBarProps) => {
   const percent = max > 0 ? Math.round((value / max) * 100) : 0;
 
   return (
@@ -19,4 +19,4 @@ export function ProgressBar({ value, max }: ProgressBarProps) {
       />
     </div>
   );
-}
+};

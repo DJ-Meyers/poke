@@ -13,7 +13,7 @@ import {
 } from '~/utils/route-params';
 import { prefetchGetPokemonById } from '~/data/pokemon';
 
-export function dexDetailLoader({ params }: LoaderFunctionArgs) {
+export const dexDetailLoader = ({ params }: LoaderFunctionArgs) => {
   const { gameId, dexId } = params;
 
   // Parse and validate game param
@@ -45,4 +45,4 @@ export function dexDetailLoader({ params }: LoaderFunctionArgs) {
   }
 
   return null;
-}
+};

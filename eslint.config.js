@@ -10,6 +10,8 @@ import eslintConfigPrettier from 'eslint-config-prettier';
 import eslintPluginPrettier from 'eslint-plugin-prettier/recommended';
 import noRelativeImportPaths from 'eslint-plugin-no-relative-import-paths';
 import unicorn from 'eslint-plugin-unicorn';
+import preferArrow from 'eslint-plugin-prefer-arrow';
+import reactPreferFunctionComponent from 'eslint-plugin-react-prefer-function-component';
 import { defineConfig, globalIgnores } from 'eslint/config';
 
 export default defineConfig([
@@ -27,6 +29,8 @@ export default defineConfig([
     plugins: {
       'no-relative-import-paths': noRelativeImportPaths,
       unicorn,
+      'prefer-arrow': preferArrow,
+      'react-prefer-function-component': reactPreferFunctionComponent,
     },
     languageOptions: {
       ecmaVersion: 2020,
@@ -40,6 +44,22 @@ export default defineConfig([
           allowSameFolder: true,
           rootDir: 'src',
           prefix: '~',
+        },
+      ],
+      // Prefer arrow functions over function declarations
+      'prefer-arrow/prefer-arrow-functions': [
+        'error',
+        {
+          disallowPrototype: true,
+          singleReturnOnly: false,
+          classPropertiesAllowed: false,
+        },
+      ],
+      // Prefer functional components over class components
+      'react-prefer-function-component/react-prefer-function-component': [
+        'error',
+        {
+          allowErrorBoundary: true,
         },
       ],
       // Enforce kebab-case for non-component files

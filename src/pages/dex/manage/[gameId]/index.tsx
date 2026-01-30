@@ -1,5 +1,5 @@
 import { DexManageModal } from '~/components/DexManageModal';
 
-export function DexManagePage() {
+export const DexManagePage = () => {
   return <DexManageModal />;
-}
+};

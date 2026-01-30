@@ -14,12 +14,12 @@ interface DexEntryDetailContainerProps {
  * Container that reads Pokemon and Species data from the React Query cache.
  * The loader ensures Pokemon data is cached before this component renders.
  */
-export function DexEntryDetailContainer({
+export const DexEntryDetailContainer = ({
   pokemonId,
   game,
   gameDex,
   regionalDexNumber,
-}: DexEntryDetailContainerProps) {
+}: DexEntryDetailContainerProps) => {
   const { data: pokemon } = useGetPokemonById({ id: pokemonId });
   const { data: species } = useGetPokemonSpeciesById({ id: pokemonId });
 
@@ -37,4 +37,4 @@ export function DexEntryDetailContainer({
       regionalDexNumber={regionalDexNumber}
     />
   );
-}
+};

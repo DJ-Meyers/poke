@@ -25,7 +25,7 @@ interface AppLayoutProps {
  * Shared app layout component for consistent page structure.
  * Provides header, optional subheader, and main content area.
  */
-export function AppLayout({
+export const AppLayout = ({
   title,
   backTo,
   progress,
@@ -33,7 +33,7 @@ export function AppLayout({
   hideSubheader,
   headerChildren,
   children,
-}: AppLayoutProps) {
+}: AppLayoutProps) => {
   return (
     <div className="h-dvh flex flex-col bg-bg text-text overflow-hidden">
       <Header
@@ -68,4 +68,4 @@ export function AppLayout({
       </main>
     </div>
   );
-}
+};

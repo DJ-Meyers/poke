@@ -2,7 +2,7 @@ interface ClearIconProps {
   className?: string;
 }
 
-export function ClearIcon({ className }: ClearIconProps) {
+export const ClearIcon = ({ className }: ClearIconProps) => {
   return (
     <svg className={className} viewBox="0 0 20 20" fill="currentColor">
       <path
@@ -12,4 +12,4 @@ export function ClearIcon({ className }: ClearIconProps) {
       />
     </svg>
   );
-}
+};

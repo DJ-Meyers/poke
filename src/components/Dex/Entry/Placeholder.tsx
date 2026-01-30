@@ -1,5 +1,5 @@
 /** Pulse placeholder that mirrors DexEntryView's layout to prevent shift. */
-export function DexEntryPlaceholder() {
+export const DexEntryPlaceholder = () => {
   return (
     <div className="relative flex flex-col items-center justify-center aspect-square w-full">
       <div className="absolute inset-0 rounded-lg bg-gray-700 animate-pulse" />
@@ -10,4 +10,4 @@ export function DexEntryPlaceholder() {
       </div>
     </div>
   );
-}
+};

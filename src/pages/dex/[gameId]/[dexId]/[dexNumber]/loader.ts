@@ -21,15 +21,15 @@ import {
  * Parses the dex number param, handling leading zeros.
  * Returns undefined if the param is not a valid number.
  */
-function parseDexNumber(dexNumber: string | undefined): number | undefined {
+const parseDexNumber = (dexNumber: string | undefined): number | undefined => {
   if (!dexNumber) {
     return undefined;
   }
   const parsed = parseInt(dexNumber, 10);
   return isNaN(parsed) || parsed <= 0 ? undefined : parsed;
-}
+};
 
-export async function dexEntryDetailLoader({ params }: LoaderFunctionArgs) {
+export const dexEntryDetailLoader = async ({ params }: LoaderFunctionArgs) => {
   const { gameId, dexId, dexNumber } = params;
 
   // Parse and validate game param
@@ -79,4 +79,4 @@ export async function dexEntryDetailLoader({ params }: LoaderFunctionArgs) {
   prefetchGetPokemonSpeciesById({ id: pokemonId });
 
   return null;
-}
+};

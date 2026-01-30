@@ -6,7 +6,7 @@ import { useDexEntryParams } from '~/utils/route-params';
  * Shows detailed information about a specific Pokémon.
  * The loader handles param validation and redirects.
  */
-export function DexEntryDetailPage() {
+export const DexEntryDetailPage = () => {
   const { game, gameDex, pokemonId, regionalDexNumber } = useDexEntryParams();
 
   return (
@@ -17,4 +17,4 @@ export function DexEntryDetailPage() {
       regionalDexNumber={regionalDexNumber}
     />
   );
-}
+};
