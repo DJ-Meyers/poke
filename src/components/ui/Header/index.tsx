@@ -28,7 +28,7 @@ export const Header = ({
 }: HeaderProps) => {
   return (
     <header
-      className={`sticky top-0 z-20 bg-surface shrink-0 shadow-md shadow-black/20 ${nav === undefined ? 'border-b border-surface-hover' : ''}`}
+      className={`sticky top-0 z-20 bg-surface shrink-0 shadow-lg shadow-black/30 ${nav === undefined ? 'border-b border-surface-hover' : ''}`}
     >
       <div className="max-w-md mx-auto px-4 py-3">
         <div className={`flex items-center gap-3 ${children ? 'mb-2' : ''}`}>
