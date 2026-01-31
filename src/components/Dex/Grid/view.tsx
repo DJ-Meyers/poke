@@ -8,7 +8,7 @@ import { VirtuosoGrid } from 'react-virtuoso';
 import { DexEntry } from '~/components/Dex/Entry';
 import { isNationalDex, type GameDex } from '~/utils/dex-data';
 import { DexSearchBar } from './DexSearchBar';
-import { useDexFilter } from './use-dex-filter';
+import { useDexFilter } from '~/hooks/use-dex-filter';
 import { BoxView } from './BoxView';
 
 interface DexGridViewProps {
