@@ -47,7 +47,7 @@ describe('DexGridView empty state', () => {
     const user = userEvent.setup();
     render(<DexGridView {...defaultProps} />);
 
-    const input = screen.getByPlaceholderText('Search by name or number');
+    const input = screen.getByPlaceholderText('Name or Number');
     await user.type(input, 'zzzzz');
 
     expect(
@@ -82,7 +82,7 @@ describe('DexGridView empty state', () => {
     await user.click(hideButton);
 
     // Type a search that matches nothing
-    const input = screen.getByPlaceholderText('Search by name or number');
+    const input = screen.getByPlaceholderText('Name or Number');
     await user.type(input, 'zzzzz');
 
     expect(

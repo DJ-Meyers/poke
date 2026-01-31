@@ -14,11 +14,34 @@ export interface UseDexFilterResult {
 }
 
 /**
+ * Checks if a number matches the query based on the matching mode.
+ *
+ * - Leading zeros in query (e.g., "001", "0025"): EXACT match
+ *   The query represents a specific number (leading zeros stripped)
+ * - No leading zeros (e.g., "1", "25"): PREFIX match
+ *   Match any number whose string representation starts with the query
+ */
+const matchesNumber = (num: number, query: string): boolean => {
+  const hasLeadingZero = query.startsWith('0');
+
+  if (hasLeadingZero) {
+    // Exact match: "001" matches only 1, "0025" matches only 25
+    const targetNumber = parseInt(query, 10);
+    return num === targetNumber;
+  } else {
+    // Prefix match: "1" matches 1, 10-19, 100-199, etc.
+    return String(num).startsWith(query);
+  }
+};
+
+/**
  * Filters a dex's Pokemon list by search query and completion status.
  *
  * - Name match: case-insensitive substring against the Pokemon name
  * - Number match: if the query is numeric (or starts with #), matches
- *   against the 1-indexed dex position
+ *   against BOTH the 1-indexed game dex position AND the national dex ID.
+ *   - Leading zeros = exact match: "001" matches only #1, "0025" matches only #25
+ *   - No leading zeros = prefix match: "1" matches 1, 10-19, 100-199, etc.
  * - Hide completed: removes entries where caughtIds contains the ID
  *
  * Returns filteredIds and a dexNumberMap so the grid can display the
@@ -59,9 +82,11 @@ export const filterDexEntries = ({
     // Search query filter
     if (query.length > 0) {
       if (isNumberSearch) {
-        // Match against dex position (1-indexed)
-        const dexStr = String(dexNumber);
-        if (!dexStr.startsWith(numericQuery)) continue;
+        // Match against BOTH game dex position AND national dex ID
+        // Numbers are padded to 4 digits and matched as substrings
+        const matchesPosition = matchesNumber(dexNumber, numericQuery);
+        const matchesNationalId = matchesNumber(id, numericQuery);
+        if (!matchesPosition && !matchesNationalId) continue;
       } else {
         // Match against Pokemon name
         const name = getPokemonName(id);

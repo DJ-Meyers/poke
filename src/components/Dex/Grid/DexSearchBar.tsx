@@ -37,7 +37,7 @@ export const DexSearchBar = ({
             type="text"
             value={searchQuery}
             onChange={(e) => onSearchChange(e.target.value)}
-            placeholder="Search by name or number"
+            placeholder="Name or Number"
             className="w-full pl-9 pr-9 py-2 rounded-lg bg-surface text-text text-sm border border-surface-hover placeholder:text-text-muted/50 focus:outline-none focus:border-primary shadow-lg shadow-black/30"
           />
           {searchQuery.length > 0 && (
