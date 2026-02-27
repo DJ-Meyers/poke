@@ -1,5 +1,9 @@
 import type { Game, GameDex } from '~/utils/dex-data';
-import { useGetPokemonById, useGetPokemonSpeciesById } from '~/data/pokemon';
+import {
+  useGetPokemonById,
+  useGetPokemonSpeciesById,
+  useGetPokemonLocationAreaById,
+} from '~/data/pokemon';
 import { DexEntryDetailView } from './view';
 
 interface DexEntryDetailContainerProps {
@@ -22,6 +26,9 @@ export const DexEntryDetailContainer = ({
 }: DexEntryDetailContainerProps) => {
   const { data: pokemon } = useGetPokemonById({ id: pokemonId });
   const { data: species } = useGetPokemonSpeciesById({ id: pokemonId });
+  const { data: locationAreas } = useGetPokemonLocationAreaById({
+    id: pokemonId,
+  });
 
   // Data is guaranteed in cache from the loader, but satisfy the type system
   if (!pokemon) {
@@ -32,6 +39,7 @@ export const DexEntryDetailContainer = ({
     <DexEntryDetailView
       pokemon={pokemon}
       species={species ?? null}
+      locationAreas={locationAreas ?? []}
       game={game}
       gameDex={gameDex}
       regionalDexNumber={regionalDexNumber}
